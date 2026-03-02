@@ -1,0 +1,50 @@
+links:
+  discord: "https://discord.gg/5CCCewZJep"
+  linktree: "https://linktr.ee/picklemequeer"
+  instagram: "https://instagram.com/picklemequeer"
+  email: "picklemequeer@gmail.com"
+  logo: "https://ugc.production.linktr.ee/11ddd734-e374-45dc-8b77-d382d4c08cb7_Screenshot-2024-09-09-at-9.41.23-PM.png?io=true"
+  host_guide: "https://tinyurl.com/pmq-host"
+  google_calendar_link: "https://calendar.google.com/calendar/u/0/r?cid=MDVmZTg4YWMzYTIzNTc3OWUxODU1NDIxZWZiNGVhM2ZlZmRiMmQ2ZjVhMzg1YzQwZmVlYzY0ZDA5NDIxNDMwM0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t"
+
+locations:
+  west_philly:
+    name: "Kingsessing Recreation Center Tennis Courts"
+    address: "1201 S 51st St, Philadelphia, PA"
+
+events:
+  - month: Sep
+    day: 6
+    weekday: Saturday
+    hosts: "Jaime & Eliza"
+    venue: Kingsessing Rec Center
+    time: "10am–12pm"
+    color: "#E8500A"
+  - month: Sep
+    day: 13
+    weekday: Saturday
+    hosts: "Kate & Eliza"
+    venue: Kingsessing Rec Center
+    time: "10am–12pm"
+    color: "#3aad5e"
+  - month: Sep
+    day: 17
+    weekday: Wednesday
+    hosts: "Meesh & Mish ✨"
+    venue: Kingsessing Rec Center
+    time: "6pm–8pm"
+    color: "#c94040"
+  - month: Sep
+    day: 21
+    weekday: Sunday
+    hosts: "Jaime & Amanda"
+    venue: Kingsessing Rec Center
+    time: "10am–12pm"
+    color: "#4bbdad"
+  - month: Sep
+    day: 28
+    weekday: Saturday
+    hosts: "Caroline & Jesse"
+    venue: Kingsessing Rec Center
+    time: "10am–12pm"
+    color: "#e5a820"
