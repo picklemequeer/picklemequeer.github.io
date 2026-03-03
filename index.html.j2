@@ -116,6 +116,7 @@
 
     /* ---- Events ---- */
 
+
     .events .location-block {
       background: #fff4ee;
       border: 1px solid #f0ece4;
@@ -209,8 +210,13 @@
 
     /* ---- FAQ ---- */
 
+    .faq h2 {
+      color: #5b2d8e;
+    }
+
     .faq dl {
       margin-top: 8px;
+      text-align: left;
     }
 
     .faq dt {
@@ -225,6 +231,60 @@
       line-height: 1.7;
       color: #555;
       margin-top: 4px;
+    }
+
+    /* ---- CTA ---- */
+
+    .cta h2 {
+      color: #5b2d8e;
+    }
+
+    .cta h2 {
+      color: #5b2d8e;
+    }
+
+    .cta p {
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .cta-buttons a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 20px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .cta-buttons img {
+      width: 18px;
+      height: 18px;
+    }
+
+    .cta-discord {
+      background: #5865f2;
+      color: #fff;
+    }
+
+    .cta-newsletter {
+      background: #ff6b1a;
+      color: #fff;
+    }
+
+    .cta-host {
+      background: #fff;
+      color: #333;
+      border: 2px solid #333;
     }
 
     /* ---- Footer ---- */
@@ -451,6 +511,27 @@
     </dl>
   </section>
 
+  <div class="divider">
+    <hr>
+  </div>
+
+  <!-- Come hang with us -->
+  <section class="cta">
+    <h2>Come hang with us!</h2>
+    <p>Join our community, stay in the loop, or become a host.</p>
+    <div class="cta-buttons">
+      <a href="{{ links.discord }}" class="cta-discord">
+        <img src="https://cdn.simpleicons.org/discord/ffffff" alt=""> Join our Discord
+      </a>
+      <a href="#newsletter" class="cta-newsletter">
+        📬 Sign up for the Newsletter
+      </a>
+      <a href="{{ links.host_guide }}" class="cta-host">
+        🏓 Become a Host
+      </a>
+    </div>
+  </section>
+
   <!-- Footer -->
   <div class="rainbow-stripe">
     <span style="background:#784F17"></span>
@@ -468,14 +549,17 @@
 
     <!-- Social links -->
     <div class="footer-links">
-      <a href="{{ links.discord }}">
-        <img src="https://cdn.simpleicons.org/discord/5b2d8e" alt=""> Discord
-      </a>
       <a href="{{ links.instagram }}">
         <img src="https://cdn.simpleicons.org/instagram/5b2d8e" alt=""> Instagram
       </a>
       <a href="{{ links.linktree }}">
         <img src="https://cdn.simpleicons.org/linktree/5b2d8e" alt=""> Linktree
+      </a>
+      <a href="{{ links.discord }}">
+        <img src="https://cdn.simpleicons.org/discord/5b2d8e" alt=""> Discord
+      </a>
+      <a href="{{ links.google_calendar_link }}">
+        <img src="https://cdn.simpleicons.org/googlecalendar/5b2d8e" alt=""> Google Calendar
       </a>
     </div>
 
@@ -501,7 +585,7 @@
         btn.disabled = true;
         btn.textContent = '...';
         try {
-          const res = await fetch('https://app.kit.com/forms/9156135/subscriptions', {
+          const res = await fetch('https://app.kit.com/forms/9157122/subscriptions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email_address: email }),
