@@ -27,6 +27,7 @@ That's it! `index.html` is for the static site (aka website, landing page, pickl
 
 The email newsletter is managed through [Kit](https://app.kit.com/). If you're in the Discord organizing group, you'll know how to access credentials.
 
-In Kit, there's a template, "PMQ", for the monthly newsletter. When sending the monthly email, go to broadcast, and use this template. Paste in the event specific HTML between the header and footer (i.e. run `make render` and look for the events part of `email.html`). Send a test broadcast to yourself to make sure nothings funky with the styling, and then to the broader subscriber population. We should do this after updating the website (i.e. ).
+In Kit, there's a template, "PMQ Monthly", for the monthly newsletter. When sending the monthly email, go to broadcast, and use this template. Paste in the event specific HTML between the header and footer (i.e. run `make render` and look for the events part of `email.html`). Send a test broadcast to yourself to make sure nothings funky with the styling, and then to the broader subscriber population.
 
 <https://picklemequeer.com> is managed through [Spaceship](https://www.spaceship.com/) and shouldn't need to be touched. If you need help, ask @mdzhang (@meesh in Discord)
+<mailto:hi@picklemequeer.com> is setup to forward to <mailto:picklemequeer@gmail.com> using [ImprovMX](https://app.improvmx.com/). Again, if you're in the organizing group, you'll know how to access credentials.
