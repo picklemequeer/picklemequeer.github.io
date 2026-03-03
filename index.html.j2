@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pickle Me Queer – Queer Pickleball in Philly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', Arial, sans-serif;
+      color: #333;
+      background: #ffffff;
+    }
+
+    .rainbow-stripe {
+      display: flex;
+      height: 6px;
+    }
+
+    .rainbow-stripe span {
+      flex: 1;
+    }
+
+    a {
+      color: #5b2d8e;
+    }
+
+    /* ---- Header ---- */
+
+    .header {
+      background: #f3eeff;
+      text-align: center;
+      padding: 48px 24px 40px;
+    }
+
+    .header img {
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .header h1 {
+      color: #5b2d8e;
+      font-size: 36px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      margin: 16px 0 0;
+    }
+
+    .header p {
+      color: #5b2d8e;
+      font-size: 16px;
+      font-weight: 700;
+      margin: 8px 0 0;
+      line-height: 1.5;
+      opacity: 0.85;
+    }
+
+    /* ---- Sections ---- */
+
+    section {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    section h2 {
+      font-size: 26px;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+
+    section p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #555;
+    }
+
+    .divider {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .divider hr {
+      border: none;
+      height: 1px;
+      background: #e0d9cc;
+    }
+
+    /* ---- Welcome ---- */
+
+    .welcome {
+      text-align: center;
+    }
+
+    .welcome h2 {
+      color: #5b2d8e;
+    }
+
+    .welcome p {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ---- Events ---- */
+
+    .events .location-block {
+      background: #fff4ee;
+      border: 1px solid #f0ece4;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+    }
+
+    .events .location-label {
+      color: #ff6b1a;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
+    }
+
+    .events .location-block .details {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .event-list {
+      list-style: none;
+      background: #fff;
+      border: 1px solid #f0ece4;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .event-list li {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+      gap: 14px;
+    }
+
+    .event-list li+li {
+      border-top: 1px solid #f0ece4;
+    }
+
+    .event-date {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 900;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .event-date .month {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.85;
+    }
+
+    .event-date .day {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .event-details {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .event-info {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .event-time {
+      font-size: 11px;
+      font-weight: 700;
+      color: #ff6b1a;
+      background: #fff4ee;
+      border-radius: 20px;
+      padding: 4px 10px;
+      white-space: nowrap;
+    }
+
+    /* ---- FAQ ---- */
+
+    .faq dl {
+      margin-top: 8px;
+    }
+
+    .faq dt {
+      font-weight: 900;
+      font-size: 15px;
+      margin-top: 20px;
+      color: #5b2d8e;
+    }
+
+    .faq dd {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #555;
+      margin-top: 4px;
+    }
+
+    /* ---- Footer ---- */
+
+    .footer {
+      background: #f3eeff;
+      text-align: center;
+      padding: 40px 24px;
+    }
+
+    .footer img.logo {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 16px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .footer-links a {
+      color: #5b2d8e;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-links img {
+      width: 16px;
+      height: 16px;
+    }
+
+    .newsletter-form {
+      max-width: 420px;
+      margin: 0 auto 24px;
+    }
+
+    .newsletter-form h3 {
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .newsletter-form .form-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .newsletter-form input[type="email"] {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid #e0d9cc;
+      border-radius: 50px;
+      font-family: 'Nunito', Arial, sans-serif;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .newsletter-form input[type="email"]:focus {
+      border-color: #5b2d8e;
+    }
+
+    .newsletter-form button {
+      background: #ff6b1a;
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 24px;
+      font-family: 'Nunito', Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .newsletter-form button:hover {
+      background: #e85d10;
+    }
+
+    .newsletter-hint {
+      font-size: 11px;
+      color: #888;
+      margin: 8px 0 0;
+    }
+
+    .newsletter-success {
+      font-size: 14px;
+      font-weight: 700;
+      color: #5b2d8e;
+      margin: 0;
+    }
+
+    .footer-email {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .footer-email a {
+      color: #5b2d8e;
+      text-decoration: none;
+    }
+
+    /* ---- Responsive ---- */
+
+    @media (max-width: 520px) {
+      .header h1 {
+        font-size: 28px;
+      }
+
+      .event-details {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .newsletter-form .form-row {
+        flex-direction: column;
+      }
+
+      .newsletter-form button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Rainbow stripe -->
+  <div class="rainbow-stripe">
+    <span style="background:#784F17"></span>
+    <span style="background:#000"></span>
+    <span style="background:#E40303"></span>
+    <span style="background:#FF8C00"></span>
+    <span style="background:#FFED00"></span>
+    <span style="background:#008026"></span>
+    <span style="background:#004DFF"></span>
+    <span style="background:#750787"></span>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <img src="{{ links.logo }}" alt="Pickle Me Queer Logo">
+    <h1>Pickle Me Queer</h1>
+    <p>A queer Philly group that plays pickleball<br>and where all skill levels are welcome 🌈</p>
+  </header>
+
+  <!-- Rainbow stripe -->
+  <div class="rainbow-stripe">
+    <span style="background:#784F17"></span>
+    <span style="background:#000"></span>
+    <span style="background:#E40303"></span>
+    <span style="background:#FF8C00"></span>
+    <span style="background:#FFED00"></span>
+    <span style="background:#008026"></span>
+    <span style="background:#004DFF"></span>
+    <span style="background:#750787"></span>
+  </div>
+
+  <!-- Gameplay Events -->
+  <section class="events">
+    <h2>Recent & Upcoming Sessions</h2>
+
+    <div class="location-block">
+      <div class="location-label">📍 Location</div>
+      <div class="details">
+        {{ locations.west_philly.name }}<br>
+        {{ locations.west_philly.address }}
+      </div>
+    </div>
+
+    <ul class="event-list">
+      {% for event in events %}
+      <li>
+        <div class="event-date" style="background:{{ event.color }}">
+          <span class="month">{{ event.month }}</span>
+          <span class="day">{{ event.day }}</span>
+        </div>
+        <div class="event-details">
+          <div class="event-info">{{ event.hosts }}</div>
+          <span class="event-time">{{ event.weekday }} · {{ event.time }}</span>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <div class="divider">
+    <hr>
+  </div>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <h2>FAQs</h2>
+    <dl>
+      <dt>Do I need my own paddle?</dt>
+      <dd>Nope! We have loaner paddles available at every session.</dd>
+
+      <dt>Do I need to know how to play?</dt>
+      <dd>Not at all. We welcome complete beginners and are happy to teach you the basics.</dd>
+
+      <dt>Is this only for LGBTQ+ people?</dt>
+      <dd>We're a queer-centered group, but community members are absolutely welcome.</dd>
+
+      <dt>Do I need to sign up in advance?</dt>
+      <dd>Nope, just show up! Check our socials for the most up-to-date schedule in case anything changes.</dd>
+
+      <dt>How much does it cost?</dt>
+      <dd>It's completely free! Our sessions are community-organized at public courts.</dd>
+
+      <dt>What should I bring?</dt>
+      <dd>Just yourself, water, and comfy shoes you can move in.</dd>
+    </dl>
+  </section>
+
+  <!-- Footer -->
+  <div class="rainbow-stripe">
+    <span style="background:#784F17"></span>
+    <span style="background:#000"></span>
+    <span style="background:#E40303"></span>
+    <span style="background:#FF8C00"></span>
+    <span style="background:#FFED00"></span>
+    <span style="background:#008026"></span>
+    <span style="background:#004DFF"></span>
+    <span style="background:#750787"></span>
+  </div>
+
+  <footer class="footer">
+    <img class="logo" src="{{ links.logo }}" alt="PMQ Logo">
+
+    <!-- Social links -->
+    <div class="footer-links">
+      <a href="{{ links.discord }}">
+        <img src="https://cdn.simpleicons.org/discord/5b2d8e" alt=""> Discord
+      </a>
+      <a href="{{ links.instagram }}">
+        <img src="https://cdn.simpleicons.org/instagram/5b2d8e" alt=""> Instagram
+      </a>
+      <a href="{{ links.linktree }}">
+        <img src="https://cdn.simpleicons.org/linktree/5b2d8e" alt=""> Linktree
+      </a>
+    </div>
+
+    <!-- Newsletter signup -->
+    <div class="newsletter-form">
+      <h3>Stay in the loop 📬</h3>
+      <form id="newsletter" class="newsletter-fields">
+        <div class="form-row">
+          <input type="email" name="email_address" placeholder="Email Address" aria-label="Email Address" required>
+          <button type="submit">Subscribe</button>
+        </div>
+        <p class="newsletter-hint">We send emails once a month with upcoming gameplay sessions.<br>Unsubscribe at any
+          time.</p>
+      </form>
+      <p class="newsletter-success" hidden>You're in! Check your email to confirm.</p>
+    </div>
+    <script>
+      document.getElementById('newsletter').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const email = form.email_address.value;
+        const btn = form.querySelector('button');
+        btn.disabled = true;
+        btn.textContent = '...';
+        try {
+          const res = await fetch('https://app.kit.com/forms/9156135/subscriptions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email_address: email }),
+          });
+          if (res.ok) {
+            form.hidden = true;
+            form.nextElementSibling.hidden = false;
+          } else {
+            btn.textContent = 'Try again';
+            btn.disabled = false;
+          }
+        } catch {
+          btn.textContent = 'Try again';
+          btn.disabled = false;
+        }
+      });
+    </script>
+
+    <p class="footer-email">
+      Questions? Reach us at <a href="mailto:{{ links.email }}">{{ links.email }}</a>
+    </p>
+  </footer>
+
+  <div class="rainbow-stripe">
+    <span style="background:#784F17"></span>
+    <span style="background:#000"></span>
+    <span style="background:#E40303"></span>
+    <span style="background:#FF8C00"></span>
+    <span style="background:#FFED00"></span>
+    <span style="background:#008026"></span>
+    <span style="background:#004DFF"></span>
+    <span style="background:#750787"></span>
+  </div>
+
+</body>
+
+</html>

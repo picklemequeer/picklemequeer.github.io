@@ -2,14 +2,9 @@
 
 Stuff for PMQ!
 
-## Guide
+## Email & Landing Page
 
-### `/email`
-
-Renders a weekly email template.
-
-Update `data.yaml` with events for the month.
-
-Run `make watch` and `make open` to preview.
-
-Copy and paste the resulting `email.html` into the email newsletter.
+- Install [`uv`](https://github.com/astral-sh/uv)
+- Install python packages with `uv`: `uv sync`
+- Run `make render`
+- Look at the output: `open index.html` or `open email.html`
