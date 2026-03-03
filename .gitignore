@@ -1,0 +1,5 @@
+index.html
+email.html
+!*.csv
+.venv/
+.ruff_cache/
