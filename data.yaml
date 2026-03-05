@@ -12,3 +12,4 @@ locations:
   west_philly:
     name: "Kingsessing Recreation Center Tennis Courts"
     address: "1201 S 51st St, Philadelphia, PA"
+    google_maps: "https://maps.app.goo.gl/wHSFpqWKNnKPY1HQA"
