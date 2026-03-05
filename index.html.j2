@@ -117,12 +117,25 @@
     /* ---- Events ---- */
 
 
+    .events .location-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      transition: filter 0.15s;
+    }
+
+    .events .location-link:active {
+      filter: brightness(0.92);
+    }
+
     .events .location-block {
       background: #fff4ee;
       border: 1px solid #f0ece4;
       border-radius: 12px;
       padding: 14px 18px;
-      margin-bottom: 20px;
     }
 
     .events .location-label {
@@ -459,13 +472,15 @@
   <section class="events">
     <h2>Recent & Upcoming Sessions</h2>
 
-    <div class="location-block">
-      <div class="location-label">📍 Location</div>
-      <div class="details">
-        {{ locations.west_philly.name }}<br>
-        {{ locations.west_philly.address }}
+    <a href="{{ locations.west_philly.google_maps }}" target="_blank" rel="noopener" class="location-link">
+      <div class="location-block">
+        <div class="location-label">📍 Location</div>
+        <div class="details">
+          {{ locations.west_philly.name }}<br>
+          {{ locations.west_philly.address }}
+        </div>
       </div>
-    </div>
+    </a>
 
     <ul class="event-list">
       {% for event in events %}
@@ -523,7 +538,7 @@
       <a href="{{ links.discord }}" class="cta-discord">
         <img src="https://cdn.simpleicons.org/discord/ffffff" alt=""> Join our Discord
       </a>
-      <a href="#newsletter" class="cta-newsletter">
+      <a href="#newsletter" class="cta-newsletter" onclick="setTimeout(()=>document.querySelector('#newsletter input[type=email]').focus(),0)">
         👇🏼 Sign up for the Newsletter
       </a>
       <a href="{{ links.host_guide }}" class="cta-host">
@@ -565,7 +580,7 @@
 
     <!-- Newsletter signup -->
     <div class="newsletter-form">
-      <h3>Stay in the loop 📬</h3>
+      <h3>📬 Stay in the loop</h3>
       <form id="newsletter" class="newsletter-fields">
         <div class="form-row">
           <input type="email" name="email_address" placeholder="Email Address" aria-label="Email Address" required>
