@@ -15,10 +15,37 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --color-purple: #5b2d8e;
+      --color-orange: #ff6b1a;
+      --color-text: #333;
+      --color-text-muted: #555;
+      --color-text-faint: #888;
+      --color-bg: #ffffff;
+      --color-bg-purple: #f3eeff;
+      --color-bg-orange: #fff4ee;
+      --color-border: #f0ece4;
+      --color-divider: #e0d9cc;
+
+      --radius-card: 12px;
+      --radius-lg: 16px;
+      --radius-pill: 50px;
+
+      --fw-bold: 700;
+      --fw-extrabold: 800;
+      --fw-black: 900;
+
+      --fs-xs: 11px;
+      --fs-sm: 13px;
+      --fs-base: 15px;
+      --fs-md: 16px;
+      --fs-lg: 26px;
+    }
+
     body {
       font-family: 'Nunito', Arial, sans-serif;
-      color: #333;
-      background: #ffffff;
+      color: var(--color-text);
+      background: var(--color-bg);
     }
 
     .rainbow-stripe {
@@ -31,13 +58,13 @@
     }
 
     a {
-      color: #5b2d8e;
+      color: var(--color-purple);
     }
 
     /* ---- Header ---- */
 
     .header {
-      background: #f3eeff;
+      background: var(--color-bg-purple);
       text-align: center;
       padding: 48px 24px 40px;
     }
@@ -50,18 +77,18 @@
     }
 
     .header h1 {
-      color: #5b2d8e;
+      color: var(--color-purple);
       font-size: 36px;
-      font-weight: 900;
+      font-weight: var(--fw-black);
       text-transform: uppercase;
       letter-spacing: -0.5px;
       margin: 16px 0 0;
     }
 
     .header p {
-      color: #5b2d8e;
-      font-size: 16px;
-      font-weight: 700;
+      color: var(--color-purple);
+      font-size: var(--fs-md);
+      font-weight: var(--fw-bold);
       margin: 8px 0 0;
       line-height: 1.5;
       opacity: 0.85;
@@ -76,15 +103,15 @@
     }
 
     section h2 {
-      font-size: 26px;
-      font-weight: 900;
+      font-size: var(--fs-lg);
+      font-weight: var(--fw-black);
       margin-bottom: 16px;
     }
 
     section p {
-      font-size: 15px;
+      font-size: var(--fs-base);
       line-height: 1.7;
-      color: #555;
+      color: var(--color-text-muted);
     }
 
     .divider {
@@ -96,7 +123,7 @@
     .divider hr {
       border: none;
       height: 1px;
-      background: #e0d9cc;
+      background: var(--color-divider);
     }
 
     /* ---- Welcome ---- */
@@ -106,7 +133,7 @@
     }
 
     .welcome h2 {
-      color: #5b2d8e;
+      color: var(--color-purple);
     }
 
     .welcome p {
@@ -123,7 +150,7 @@
       color: inherit;
       cursor: pointer;
       margin-bottom: 20px;
-      border-radius: 12px;
+      border-radius: var(--radius-card);
       transition: filter 0.15s;
     }
 
@@ -132,33 +159,33 @@
     }
 
     .events .location-block {
-      background: #fff4ee;
-      border: 1px solid #f0ece4;
-      border-radius: 12px;
+      background: var(--color-bg-orange);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-card);
       padding: 14px 18px;
     }
 
     .events .location-label {
-      color: #ff6b1a;
+      color: var(--color-orange);
       font-size: 12px;
-      font-weight: 900;
+      font-weight: var(--fw-black);
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 2px;
     }
 
     .events .location-block .details {
-      font-size: 13px;
-      font-weight: 700;
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-bold);
       line-height: 1.6;
-      color: #333;
+      color: var(--color-text);
     }
 
     .event-list {
       list-style: none;
-      background: #fff;
-      border: 1px solid #f0ece4;
-      border-radius: 16px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
       overflow: hidden;
     }
 
@@ -170,15 +197,15 @@
     }
 
     .event-list li+li {
-      border-top: 1px solid #f0ece4;
+      border-top: 1px solid var(--color-border);
     }
 
     .event-date {
       width: 52px;
       height: 52px;
-      border-radius: 12px;
+      border-radius: var(--radius-card);
       color: #fff;
-      font-weight: 900;
+      font-weight: var(--fw-black);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -207,57 +234,79 @@
     }
 
     .event-info {
-      font-weight: 700;
-      font-size: 15px;
+      font-weight: var(--fw-bold);
+      font-size: var(--fs-base);
     }
 
     .event-time {
-      font-size: 11px;
-      font-weight: 700;
-      color: #ff6b1a;
-      background: #fff4ee;
-      border-radius: 20px;
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+      color: var(--color-orange);
+      background: var(--color-bg-orange);
+      border-radius: var(--radius-pill);
       padding: 4px 10px;
       white-space: nowrap;
     }
 
-    /* ---- FAQ ---- */
+    /* ---- Info sections (values, guidelines, FAQ, CTA) ---- */
 
-    .faq h2 {
-      color: #5b2d8e;
+    .info-section h2 {
+      color: var(--color-purple);
     }
 
-    .faq dl {
+    /* ---- Definition lists (guidelines, FAQ) ---- */
+
+    .dl-list {
       margin-top: 8px;
       text-align: left;
     }
 
-    .faq dt {
-      font-weight: 900;
-      font-size: 15px;
+    .dl-list dt {
+      font-weight: var(--fw-black);
+      font-size: var(--fs-base);
       margin-top: 20px;
-      color: #5b2d8e;
+      color: var(--color-purple);
     }
 
-    .faq dd {
-      font-size: 15px;
+    .dl-list dd {
+      font-size: var(--fs-base);
       line-height: 1.7;
-      color: #555;
+      color: var(--color-text-muted);
       margin-top: 4px;
     }
 
-    /* ---- CTA ---- */
+    /* ---- Values cards ---- */
 
-    .cta h2 {
-      color: #5b2d8e;
+    .values-list {
+      list-style: none;
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
     }
 
-    .cta h2 {
-      color: #5b2d8e;
+    .values-list li {
+      background: var(--color-bg-purple);
+      border-radius: var(--radius-card);
+      padding: 18px 20px;
+    }
+
+    .values-list li strong {
+      display: block;
+      color: var(--color-purple);
+      font-size: var(--fs-base);
+      font-weight: var(--fw-black);
+      margin-bottom: 4px;
+    }
+
+    .values-list li span {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--color-text-muted);
     }
 
     .cta p {
-      color: #555;
+      color: var(--color-text-muted);
       margin-bottom: 20px;
     }
 
@@ -273,9 +322,9 @@
       justify-content: center;
       gap: 8px;
       padding: 14px 20px;
-      border-radius: 50px;
+      border-radius: var(--radius-pill);
       font-size: 14px;
-      font-weight: 800;
+      font-weight: var(--fw-extrabold);
       text-decoration: none;
     }
 
@@ -290,20 +339,20 @@
     }
 
     .cta-newsletter {
-      background: #ff6b1a;
+      background: var(--color-orange);
       color: #fff;
     }
 
     .cta-host {
-      background: #fff;
-      color: #333;
-      border: 2px solid #333;
+      background: var(--color-bg);
+      color: var(--color-text);
+      border: 2px solid var(--color-text);
     }
 
     /* ---- Footer ---- */
 
     .footer {
-      background: #f3eeff;
+      background: var(--color-bg-purple);
       text-align: center;
       padding: 40px 24px;
     }
@@ -325,10 +374,10 @@
     }
 
     .footer-links a {
-      color: #5b2d8e;
+      color: var(--color-purple);
       text-decoration: none;
-      font-size: 13px;
-      font-weight: 700;
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-bold);
       display: flex;
       align-items: center;
       gap: 4px;
@@ -349,8 +398,8 @@
     }
 
     .newsletter-form h3 {
-      font-size: 16px;
-      font-weight: 900;
+      font-size: var(--fs-md);
+      font-weight: var(--fw-black);
       margin-bottom: 10px;
     }
 
@@ -362,26 +411,26 @@
     .newsletter-form input[type="email"] {
       flex: 1;
       padding: 12px 16px;
-      border: 2px solid #e0d9cc;
-      border-radius: 50px;
+      border: 2px solid var(--color-divider);
+      border-radius: var(--radius-pill);
       font-family: 'Nunito', Arial, sans-serif;
       font-size: 14px;
       outline: none;
     }
 
     .newsletter-form input[type="email"]:focus {
-      border-color: #5b2d8e;
+      border-color: var(--color-purple);
     }
 
     .newsletter-form button {
-      background: #ff6b1a;
+      background: var(--color-orange);
       color: #fff;
       border: none;
-      border-radius: 50px;
+      border-radius: var(--radius-pill);
       padding: 12px 24px;
       font-family: 'Nunito', Arial, sans-serif;
       font-size: 14px;
-      font-weight: 800;
+      font-weight: var(--fw-extrabold);
       cursor: pointer;
     }
 
@@ -390,25 +439,25 @@
     }
 
     .newsletter-hint {
-      font-size: 11px;
-      color: #888;
+      font-size: var(--fs-xs);
+      color: var(--color-text-faint);
       margin: 8px 0 0;
     }
 
     .newsletter-success {
       font-size: 14px;
-      font-weight: 700;
-      color: #5b2d8e;
+      font-weight: var(--fw-bold);
+      color: var(--color-purple);
       margin: 0;
     }
 
     .footer-email {
       font-size: 12px;
-      color: #888;
+      color: var(--color-text-faint);
     }
 
     .footer-email a {
-      color: #5b2d8e;
+      color: var(--color-purple);
       text-decoration: none;
     }
 
@@ -430,6 +479,10 @@
 
       .newsletter-form button {
         width: 100%;
+      }
+
+      .values-list {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -502,10 +555,58 @@
     <hr>
   </div>
 
+  <!-- Values -->
+  <section class="values info-section">
+    <h2>Our Values</h2>
+    <ul class="values-list">
+      <li>
+        <strong>Inclusion</strong>
+        <span>Equal access to opportunities and resources for people who might otherwise be excluded or marginalized to play pickleball.</span>
+      </li>
+      <li>
+        <strong>Accessibility</strong>
+        <span>Designing a pickleball community in which all people are able to enjoy the benefits of the sport experience.</span>
+      </li>
+      <li>
+        <strong>Safety</strong>
+        <span>Ensuring everyone feels and is both physically and psychologically cared for.</span>
+      </li>
+      <li>
+        <strong>Fun</strong>
+        <span>As queer people, this is a place to show up as ourselves to play, compete, make new friends, and have fun.</span>
+      </li>
+    </ul>
+  </section>
+
+  <div class="divider">
+    <hr>
+  </div>
+
+  <!-- Community Guidelines -->
+  <section class="guidelines info-section">
+    <h2>Community Guidelines</h2>
+    <dl class="dl-list">
+      <dt>Be respectful of the community</dt>
+      <dd>We are building a queer-centered group and we want to ensure the safety and joy of this group.</dd>
+
+      <dt>Be respectful of all players</dt>
+      <dd>Be a good sport (win or lose), be honest, fair, and be conscientious of everyone's experience.</dd>
+
+      <dt>Be here and be queer</dt>
+      <dd>We are here first and foremost to have fun, so don't be a sour pickle!</dd>
+    </dl>
+  </section>
+
+  <div class="divider">
+    <hr>
+  </div>
+
+
+
   <!-- FAQ -->
-  <section class="faq">
+  <section class="faq info-section">
     <h2>FAQs</h2>
-    <dl>
+    <dl class="dl-list">
       <dt>Do I need my own paddle?</dt>
       <dd>Nope! We have loaner paddles available at every session.</dd>
 
@@ -531,7 +632,7 @@
   </div>
 
   <!-- Come hang with us -->
-  <section class="cta">
+  <section class="cta info-section">
     <h2>Come hang with us!</h2>
     <p>Join our community, stay in the loop, or become a host.</p>
     <div class="cta-buttons">
@@ -574,7 +675,10 @@
         <img src="https://cdn.simpleicons.org/discord/5b2d8e" alt=""> Discord
       </a>
       <a href="{{ links.google_calendar }}">
-        <img src="https://cdn.simpleicons.org/googlecalendar/5b2d8e" alt=""> Google Calendar
+        <img src="https://cdn.simpleicons.org/googlecalendar/5b2d8e" alt=""> Calendar
+      </a>
+      <a href="{{ links.google_map }}">
+        <img src="https://cdn.simpleicons.org/googlemaps/5b2d8e" alt=""> Locations
       </a>
     </div>
 
