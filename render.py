@@ -8,7 +8,6 @@ falls back to the most recent month that has events.
 Usage:
     python render.py              # render once
     python render.py --watch      # render and re-render on changes
-    python render.py data.yaml    # render with alternate data file
 """
 
 import csv
@@ -40,10 +39,8 @@ def parse_event_date(raw: str) -> tuple[datetime, str] | None:
         return None
     date_part, time_part = m.group(1), m.group(2).strip()
 
-    # Parse the date (handles 2-digit years)
     dt = datetime.strptime(date_part, "%m/%d/%y")
 
-    # Build the display time string: "10am - 12pm" → "10am–12pm"
     time_str = re.sub(r"\s*-\s*", "–", time_part)
 
     return dt, time_str
@@ -93,22 +90,28 @@ def load_events(csv_path: Path, today: date | None = None) -> list[dict]:
             last_month = past[-1]["date_obj"].replace(day=1)
             upcoming = [e for e in past if e["date_obj"] >= last_month]
 
-    # Assign cycling colors and build final dicts
-    events = []
-    for i, e in enumerate(upcoming):
-        label = e["event_name"] or e["hosts"] or "Open Play"
-        events.append(
-            {
-                "month": e["month"],
-                "day": e["day"],
-                "weekday": e["weekday"],
-                "time": e["time"],
-                "hosts": label,
-                "color": EVENT_COLORS[i % len(EVENT_COLORS)],
-            }
-        )
+    # Split into regular and special (have custom event name, no hosts) events
+    regular = [e for e in upcoming if not (e["event_name"] and not e["hosts"])]
+    special = [e for e in upcoming if e["event_name"] and not e["hosts"]]
 
-    return events
+    # Assign cycling colors and build final dicts
+    def build_event_list(source):
+        result = []
+        for i, e in enumerate(source):
+            label = e["event_name"] or e["hosts"] or "Open Play"
+            result.append(
+                {
+                    "month": e["month"],
+                    "day": e["day"],
+                    "weekday": e["weekday"],
+                    "time": e["time"],
+                    "hosts": label,
+                    "color": EVENT_COLORS[i % len(EVENT_COLORS)],
+                }
+            )
+        return result
+
+    return build_event_list(regular), build_event_list(special)
 
 
 def render(data_file: Path) -> None:
@@ -117,7 +120,7 @@ def render(data_file: Path) -> None:
 
     csv_path = BASE_DIR / "gameplay.csv"
     if csv_path.exists():
-        data["events"] = load_events(csv_path)
+        data["events"], data["special_events"] = load_events(csv_path)
 
     env = Environment(
         loader=FileSystemLoader(BASE_DIR),
