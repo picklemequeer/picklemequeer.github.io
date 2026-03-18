@@ -80,7 +80,6 @@
       color: var(--color-purple);
       font-size: 36px;
       font-weight: var(--fw-black);
-      text-transform: uppercase;
       letter-spacing: -0.5px;
       margin: 16px 0 0;
     }
@@ -520,6 +519,32 @@
     <span style="background:#004DFF"></span>
     <span style="background:#750787"></span>
   </div>
+
+  <!-- Special Events -->
+  {% if special_events %}
+  <section class="events">
+    <h2>Special Events</h2>
+
+    <ul class="event-list">
+      {% for event in special_events %}
+      <li>
+        <div class="event-date" style="background:{{ event.color }}">
+          <span class="month">{{ event.month }}</span>
+          <span class="day">{{ event.day }}</span>
+        </div>
+        <div class="event-details">
+          <div class="event-info">{{ event.hosts }}</div>
+          <span class="event-time">{{ event.weekday }} · {{ event.time }}</span>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <div class="divider">
+    <hr>
+  </div>
+  {% endif %}
 
   <!-- Gameplay Events -->
   <section class="events">
