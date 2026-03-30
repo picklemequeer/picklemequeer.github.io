@@ -54,12 +54,16 @@ def parse_event_date(raw: str) -> tuple[datetime, str] | None:
     return dt, time_str
 
 
-def load_events(today: date | None = None) -> list[dict]:
+def load_events(today: date | None = None, local: bool = False) -> list[dict]:
     today = today or date.today()
     first_of_month = today.replace(day=1)
 
-    with urllib.request.urlopen(GAMEPLAY_SHEET_URL) as resp:
-        content = resp.read().decode("utf-8")
+    csv_path = BASE_DIR / "gameplay.csv"
+    if local and csv_path.exists():
+        content = csv_path.read_text()
+    else:
+        with urllib.request.urlopen(GAMEPLAY_SHEET_URL) as resp:
+            content = resp.read().decode("utf-8")
 
     all_events = []
     for row in csv.DictReader(io.StringIO(content)):
@@ -68,9 +72,7 @@ def load_events(today: date | None = None) -> list[dict]:
             continue
         dt, time_str = parsed
         hosts_raw = row.get("hosts", "").strip().strip('"')
-        hosts = (
-            " & ".join(h.strip() for h in hosts_raw.split(",")) if hosts_raw else ""
-        )
+        hosts = " & ".join(h.strip() for h in hosts_raw.split(",")) if hosts_raw else ""
         event_name = row.get("eventName", "").strip()
 
         all_events.append(
@@ -99,14 +101,14 @@ def load_events(today: date | None = None) -> list[dict]:
             upcoming = [e for e in past if e["date_obj"] >= last_month]
 
     # Split into regular and special (have custom event name, no hosts) events
-    regular = [e for e in upcoming if not (e["event_name"] and not e["hosts"])]
-    special = [e for e in upcoming if e["event_name"] and not e["hosts"]]
+    regular = [e for e in upcoming if e["hosts"]]
+    special = [e for e in upcoming if e["event_name"]]
 
     # Assign cycling colors and build final dicts
-    def build_event_list(source):
+    def build_event_list(source, use_event_name=False):
         result = []
         for i, e in enumerate(source):
-            label = e["event_name"] or e["hosts"] or "Open Play"
+            label = e["event_name"] if use_event_name else (e["hosts"] or "Open Play")
             result.append(
                 {
                     "month": e["month"],
@@ -119,14 +121,14 @@ def load_events(today: date | None = None) -> list[dict]:
             )
         return result
 
-    return build_event_list(regular), build_event_list(special)
+    return build_event_list(regular), build_event_list(special, use_event_name=True)
 
 
-def render(data_file: Path) -> None:
+def render(data_file: Path, local: bool = False) -> None:
     with open(data_file) as f:
         data = yaml.safe_load(f)
 
-    data["events"], data["special_events"] = load_events()
+    data["events"], data["special_events"] = load_events(local=local)
 
     env = Environment(
         loader=FileSystemLoader(BASE_DIR),
@@ -140,7 +142,7 @@ def render(data_file: Path) -> None:
         print(f"[{time.strftime('%H:%M:%S')}] Rendered → {output_path}")
 
 
-def watch(data_file: Path) -> None:
+def watch(data_file: Path, local: bool = False) -> None:
     from watchdog.events import FileSystemEventHandler
     from watchdog.observers import Observer
 
@@ -148,9 +150,9 @@ def watch(data_file: Path) -> None:
         def on_modified(self, event):
             name = Path(event.src_path).name
             if name in WATCH_FILES:
-                render(data_file)
+                render(data_file, local=local)
 
-    render(data_file)
+    render(data_file, local=local)
     observer = Observer()
     observer.schedule(Handler(), str(BASE_DIR), recursive=False)
     observer.start()
@@ -171,15 +173,16 @@ def fetch_csv(dest: Path) -> None:
 
 
 def main():
-    args = [a for a in sys.argv[1:] if a not in ("--watch", "fetch-csv")]
+    local = "--local" in sys.argv
+    args = [a for a in sys.argv[1:] if a not in ("--watch", "--local", "fetch-csv")]
     data_file = Path(args[0]) if args else BASE_DIR / "data.yaml"
 
     if "fetch-csv" in sys.argv:
         fetch_csv(BASE_DIR / "gameplay.csv")
     elif "--watch" in sys.argv:
-        watch(data_file)
+        watch(data_file, local=local)
     else:
-        render(data_file)
+        render(data_file, local=local)
 
 
 if __name__ == "__main__":
