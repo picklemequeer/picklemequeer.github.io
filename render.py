@@ -11,9 +11,11 @@ Usage:
 """
 
 import csv
+import io
 import re
 import sys
 import time
+import urllib.request
 from datetime import date, datetime
 from pathlib import Path
 
@@ -27,7 +29,13 @@ TEMPLATES = [
     ("index.html.j2", "index.html"),
 ]
 
-WATCH_FILES = {"data.yaml", "gameplay.csv", "email.html.j2", "index.html.j2"}
+WATCH_FILES = {"data.yaml", "email.html.j2", "index.html.j2"}
+
+GAMEPLAY_SHEET_URL = (
+    "https://docs.google.com/spreadsheets/d"
+    "/1omIVUX9-nvRWmMXTfH5N8gTG_qM6yYccwDCoHsMmYns"
+    "/export?format=csv&gid=0"
+)
 
 EVENT_COLORS = ["#E8500A", "#3aad5e", "#c94040", "#4bbdad", "#e5a820"]
 
@@ -46,37 +54,37 @@ def parse_event_date(raw: str) -> tuple[datetime, str] | None:
     return dt, time_str
 
 
-def load_events(csv_path: Path, today: date | None = None) -> list[dict]:
-    """Load events from gameplay.csv, filtered to relevant dates."""
+def load_events(today: date | None = None) -> list[dict]:
     today = today or date.today()
     first_of_month = today.replace(day=1)
 
-    all_events = []
-    with open(csv_path, newline="") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            parsed = parse_event_date(row["date"])
-            if not parsed:
-                continue
-            dt, time_str = parsed
-            hosts_raw = row.get("hosts", "").strip().strip('"')
-            hosts = (
-                " & ".join(h.strip() for h in hosts_raw.split(",")) if hosts_raw else ""
-            )
-            event_name = row.get("eventName", "").strip()
+    with urllib.request.urlopen(GAMEPLAY_SHEET_URL) as resp:
+        content = resp.read().decode("utf-8")
 
-            all_events.append(
-                {
-                    "dt": dt,
-                    "date_obj": dt.date(),
-                    "month": dt.strftime("%b"),
-                    "day": dt.day,
-                    "weekday": dt.strftime("%A"),
-                    "time": time_str,
-                    "hosts": hosts,
-                    "event_name": event_name,
-                }
-            )
+    all_events = []
+    for row in csv.DictReader(io.StringIO(content)):
+        parsed = parse_event_date(row["date"])
+        if not parsed:
+            continue
+        dt, time_str = parsed
+        hosts_raw = row.get("hosts", "").strip().strip('"')
+        hosts = (
+            " & ".join(h.strip() for h in hosts_raw.split(",")) if hosts_raw else ""
+        )
+        event_name = row.get("eventName", "").strip()
+
+        all_events.append(
+            {
+                "dt": dt,
+                "date_obj": dt.date(),
+                "month": dt.strftime("%b"),
+                "day": dt.day,
+                "weekday": dt.strftime("%A"),
+                "time": time_str,
+                "hosts": hosts,
+                "event_name": event_name,
+            }
+        )
 
     all_events.sort(key=lambda e: e["dt"])
 
@@ -118,9 +126,7 @@ def render(data_file: Path) -> None:
     with open(data_file) as f:
         data = yaml.safe_load(f)
 
-    csv_path = BASE_DIR / "gameplay.csv"
-    if csv_path.exists():
-        data["events"], data["special_events"] = load_events(csv_path)
+    data["events"], data["special_events"] = load_events()
 
     env = Environment(
         loader=FileSystemLoader(BASE_DIR),
