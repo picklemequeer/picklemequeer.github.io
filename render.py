@@ -163,11 +163,20 @@ def watch(data_file: Path) -> None:
     observer.join()
 
 
+def fetch_csv(dest: Path) -> None:
+    with urllib.request.urlopen(GAMEPLAY_SHEET_URL) as resp:
+        content = resp.read().decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    dest.write_text(content)
+    print(f"Wrote {dest}")
+
+
 def main():
-    args = [a for a in sys.argv[1:] if a != "--watch"]
+    args = [a for a in sys.argv[1:] if a not in ("--watch", "fetch-csv")]
     data_file = Path(args[0]) if args else BASE_DIR / "data.yaml"
 
-    if "--watch" in sys.argv:
+    if "fetch-csv" in sys.argv:
+        fetch_csv(BASE_DIR / "gameplay.csv")
+    elif "--watch" in sys.argv:
         watch(data_file)
     else:
         render(data_file)
