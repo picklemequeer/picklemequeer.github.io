@@ -29,7 +29,7 @@ date,eventName,eventDescription,eventLocation,hosts
 5/29/24 at 5:30pm,,,,
 6/2/24 at 9am,,,,
 6/5/24 at 6pm,,,,
-6/8/24 at 9:30am - 1:30pm, Pickle Pride Picnic 🥒🏳️‍🌈🧺,,,
+6/8/24 at 9:30am - 1:30pm,Pickle Pride Picnic 🥒🏳️‍🌈🧺,,,
 6/11/24 at 6pm,,,,
 6/16/24 at 9am,,,,
 6/19/24 at 6pm,,,,
@@ -61,7 +61,7 @@ date,eventName,eventDescription,eventLocation,hosts
 9/18/24 at 6pm,,,,
 9/22/24 at 9am,,,,
 9/25/24 at 6pm,,,,
-9/29/24 at 8:30am, Tournament,,,
+9/29/24 at 8:30am,Tournament,,,
 10/6/24 at 9am,,,,
 10/9/24 at 5pm,,,,
 10/12/24 at 9am,,,,
@@ -69,7 +69,7 @@ date,eventName,eventDescription,eventLocation,hosts
 10/20/24 at 11am,,,,
 10/23/24 at 5pm,,,,
 10/27/24 at 11am,,,,
-10/30/24 at 5pm, Halloween Edition,,,
+10/30/24 at 5pm,Halloween Edition,,,
 11/2/24 at 10am,,,,
 11/5/24 at 5:30pm,,,,
 11/10/24 at 10am,,,,
@@ -87,11 +87,11 @@ date,eventName,eventDescription,eventLocation,hosts
 4/5/25 at 11am - 1pm,,,,"Nia,Som,Sanjay"
 4/8/25 at 6:30pm - 8:30pm,,,,"Jaime,Viv"
 4/13/25 at 10am - 12pm,,,,"Viv,Caroline"
-4/16/25 at 5:30pm - 7:30pm,,,,"Caroline"
+4/16/25 at 5:30pm - 7:30pm,,,,Caroline
 4/19/25 at 11am - 1pm,,,,"Tori,Amanda"
-4/23/25 at 6pm - 8pm,,,,"Jesse"
+4/23/25 at 6pm - 8pm,,,,Jesse
 4/27/25 at 11am - 1pm,,,,"Nia,Som,Sanjay"
-4/29/25 at 6:30pm - 8:30pm,,,,"Jaime"
+4/29/25 at 6:30pm - 8:30pm,,,,Jaime
 5/3/25 at 10am - 12pm,,,,"Eliza,Jaime"
 5/7/25 at 6pm - 8pm,,,,"Jaime,Caroline"
 5/10/25 at 10am - 12pm,,,,"Kate,Jesse"
@@ -101,13 +101,13 @@ date,eventName,eventDescription,eventLocation,hosts
 5/24/25 at 11am - 1pm,,,,"Tori,Amanda"
 5/28/25 at 6pm - 8pm,,,,"Jesse,Jaime"
 6/1/25 at 10am - 12pm,,,,"Caroline,Viv"
-6/2/25 at 6pm - 8pm, Tournament Practice,,,
-6/7/25 at 8am - 3pm, PRIDE Tournament,,,
+6/2/25 at 6pm - 8pm,Tournament Practice,,,
+6/7/25 at 8am - 3pm,PRIDE Tournament,,,
 6/10/25 at 6pm - 8pm,,,,"Mish,meesh"
 6/15/25 at 9am - 11am,,,,"Eliza,Caroline"
 6/18/25 at 6pm - 8pm,,,,"Jesse,Jaime"
 6/21/25 at 9am - 11am,,,,"Jaime,Kate"
-6/25/25 at 6pm - 8pm,,,,"Jaime"
+6/25/25 at 6pm - 8pm,,,,Jaime
 6/28/25 at 9am - 11am,,,,"meesh,Viv"
 7/1/25 at 6pm - 8pm,,,,"meesh,Viv"
 7/8/25 at 6pm - 8pm,,,,"Sanjay,Som"
@@ -119,7 +119,7 @@ date,eventName,eventDescription,eventLocation,hosts
 7/29/25 at 6pm - 8pm,,,,"meesh,Eliza"
 8/3/25 at 9am - 11am,,,,"meesh,Caroline"
 8/6/25 at 6pm - 8pm,,,,"Jesse,Jaime"
-8/9/25 at 9am - 12pm, Ballers,,,
+8/9/25 at 9am - 12pm,Ballers,,,
 8/12/25 at 6pm - 8pm,,,,"Som,Sanjay"
 8/16/25 at 9am - 11am,,,,"Viv,Eliza"
 8/19/25 at 6pm - 8pm,,,,"meesh,Eliza"
@@ -134,7 +134,7 @@ date,eventName,eventDescription,eventLocation,hosts
 9/28/25 at 10am - 12pm,,,47th and Spruce,"Jaime,Amanda"
 10/11/25 at 9am - 11am,Clinic,Designed for 8-12 participants on 2 nets (please DM to sign up),47th and Spruce,"Michelle,Aly"
 10/15/25 at 6pm - 7:30pm,Clinic,,47th and Spruce,"Michelle,Aly"
-10/21/25 at 6pm - 7:30pm,Clinic,,,"Michelle"
+10/21/25 at 6pm - 7:30pm,Clinic,,,Michelle
 11/1/25 at 10am - 12pm,,,,"Jesse,Aly"
 11/2/25 at 9am - 12pm,,,,"Viv,Sanjay"
 11/5/25 at 6pm - 9pm,,,,"meesh,Michelle"
@@ -154,6 +154,6 @@ date,eventName,eventDescription,eventLocation,hosts
 4/12/26 at 10am - 12pm,,,,"Jane,Eliza"
 4/14/26 at 6pm - 8pm,,,,"meesh,Aly"
 4/18/26 at 10am - 12pm,,,,"Shannon,Michelle"
-4/19/26 at 10am - 12pm,,,,"Saron,Caroline"
+4/19/26 at 10am - 12pm,Clothing Swap & Regular Play,,,"Saron,Caroline"
 4/21/26 at 6:30pm - 8pm,,,,"Sanjay,Jaime"
 4/25/26 at 11:30am - 1pm,,,,"Aly,Amanda"
