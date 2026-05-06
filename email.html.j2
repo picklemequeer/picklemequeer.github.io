@@ -118,11 +118,16 @@
                       </tr>
                     </table>
                   </td>
-                  <td valign="middle" style="font-weight:700; font-size:15px; color:#333; font-family:'Nunito',Arial,sans-serif; vertical-align:middle;">{{ event.hosts }}</td>
+                  <td valign="middle" style="font-weight:700; font-size:15px; font-family:'Nunito',Arial,sans-serif; vertical-align:middle;{% if event.status %} color:#999; text-decoration:line-through;{% else %} color:#333;{% endif %}">{{ event.hosts }}</td>
                   <td width="1" valign="middle" align="right" style="white-space:nowrap;">
+                    {% if event.status %}
+                    <span
+                      style="font-size:11px; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; color:#fff; background:#c94040; border:2px solid #c94040; border-radius:4px; padding:4px 10px; font-family:'Nunito',Arial,sans-serif;">Canceled · {{ event.status_label }}</span>
+                    {% else %}
                     <span
                       style="font-size:11px; font-weight:700; color:#ff6b1a; background:#fff4ee; border-radius:20px; padding:4px 10px; font-family:'Nunito',Arial,sans-serif;">{{
                       event.weekday }} · {{ event.time }}</span>
+                    {% endif %}
                   </td>
                 </tr>
               </table>
