@@ -8,6 +8,7 @@ falls back to the most recent month that has events.
 Usage:
     python render.py              # render once
     python render.py --watch      # render and re-render on changes
+    python render.py --next-month # treat the 1st of next month as "today"
 """
 
 import csv
@@ -124,11 +125,11 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
     return build_event_list(regular), build_event_list(special, use_event_name=True)
 
 
-def render(data_file: Path, local: bool = False) -> None:
+def render(data_file: Path, local: bool = False, today: date | None = None) -> None:
     with open(data_file) as f:
         data = yaml.safe_load(f)
 
-    data["events"], data["special_events"] = load_events(local=local)
+    data["events"], data["special_events"] = load_events(today=today, local=local)
 
     env = Environment(
         loader=FileSystemLoader(BASE_DIR),
@@ -142,7 +143,7 @@ def render(data_file: Path, local: bool = False) -> None:
         print(f"[{time.strftime('%H:%M:%S')}] Rendered → {output_path}")
 
 
-def watch(data_file: Path, local: bool = False) -> None:
+def watch(data_file: Path, local: bool = False, today: date | None = None) -> None:
     from watchdog.events import FileSystemEventHandler
     from watchdog.observers import Observer
 
@@ -150,9 +151,9 @@ def watch(data_file: Path, local: bool = False) -> None:
         def on_modified(self, event):
             name = Path(event.src_path).name
             if name in WATCH_FILES:
-                render(data_file, local=local)
+                render(data_file, local=local, today=today)
 
-    render(data_file, local=local)
+    render(data_file, local=local, today=today)
     observer = Observer()
     observer.schedule(Handler(), str(BASE_DIR), recursive=False)
     observer.start()
@@ -172,17 +173,26 @@ def fetch_csv(dest: Path) -> None:
     print(f"Wrote {dest}")
 
 
+def first_of_next_month(d: date) -> date:
+    return date(d.year + 1, 1, 1) if d.month == 12 else date(d.year, d.month + 1, 1)
+
+
 def main():
     local = "--local" in sys.argv
-    args = [a for a in sys.argv[1:] if a not in ("--watch", "--local", "fetch-csv")]
+    today = first_of_next_month(date.today()) if "--next-month" in sys.argv else None
+    args = [
+        a
+        for a in sys.argv[1:]
+        if a not in ("--watch", "--local", "--next-month", "fetch-csv")
+    ]
     data_file = Path(args[0]) if args else BASE_DIR / "data.yaml"
 
     if "fetch-csv" in sys.argv:
         fetch_csv(BASE_DIR / "gameplay.csv")
     elif "--watch" in sys.argv:
-        watch(data_file, local=local)
+        watch(data_file, local=local, today=today)
     else:
-        render(data_file, local=local)
+        render(data_file, local=local, today=today)
 
 
 if __name__ == "__main__":
