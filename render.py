@@ -75,6 +75,7 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
         hosts_raw = row.get("hosts", "").strip().strip('"')
         hosts = " & ".join(h.strip() for h in hosts_raw.split(",")) if hosts_raw else ""
         event_name = row.get("eventName", "").strip()
+        status = (row.get("status") or "").strip().lower()
 
         all_events.append(
             {
@@ -86,6 +87,7 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
                 "time": time_str,
                 "hosts": hosts,
                 "event_name": event_name,
+                "status": status,
             }
         )
 
@@ -118,6 +120,8 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
                     "time": e["time"],
                     "hosts": label,
                     "color": EVENT_COLORS[i % len(EVENT_COLORS)],
+                    "status": e["status"],
+                    "status_label": e["status"].title(),
                 }
             )
         return result
