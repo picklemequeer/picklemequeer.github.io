@@ -288,6 +288,72 @@
       white-space: nowrap;
     }
 
+    /* ---- Calendar ---- */
+
+    .view-calendar {
+      margin-bottom: 24px;
+    }
+
+    .cal-month + .cal-month {
+      margin-top: 24px;
+    }
+
+    .cal-title {
+      font-weight: var(--fw-black);
+      font-size: var(--fs-md);
+      color: var(--color-purple);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .cal-wd {
+      text-align: center;
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-black);
+      color: var(--color-text-faint);
+      text-transform: uppercase;
+      padding-bottom: 4px;
+    }
+
+    .cal-cell {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-bold);
+      color: var(--color-text-muted);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+    }
+
+    .cal-cell.empty {
+      border: none;
+      background: transparent;
+    }
+
+    .cal-cell.has-event {
+      color: var(--ev);
+      border-color: var(--ev);
+      background: color-mix(in srgb, var(--ev) 12%, #fff);
+    }
+
+    .cal-cell.has-event.canceled {
+      color: var(--color-text-faint);
+      border-color: var(--color-border);
+      background: var(--color-bg);
+      text-decoration: line-through;
+    }
+
     /* ---- Info sections (values, guidelines, FAQ, CTA) ---- */
 
     .info-section h2 {
@@ -604,6 +670,8 @@
       </div>
     </a>
 
+    <div class="view-calendar"></div>
+
     <ul class="event-list">
       {% for event in events %}
       <li{% if event.status %} class="canceled"{% endif %}>
@@ -621,6 +689,69 @@
       </li>
       {% endfor %}
     </ul>
+
+    <script id="sessions-data" type="application/json">{{ events | tojson }}</script>
+    <script>
+      (function () {
+        const root = document.currentScript.closest('.events');
+        const calWrap = root.querySelector('.view-calendar');
+        const events = JSON.parse(root.querySelector('#sessions-data').textContent || '[]');
+
+        const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
+          'July', 'August', 'September', 'October', 'November', 'December'];
+        const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
+        // Group events by year-month, then by day-of-month.
+        const months = new Map();
+        for (const ev of events) {
+          const [y, m, d] = ev.iso.split('-').map(Number);
+          const key = y + '-' + m;
+          if (!months.has(key)) months.set(key, { y, m, days: new Map() });
+          const days = months.get(key).days;
+          if (!days.has(d)) days.set(d, []);
+          days.get(d).push(ev);
+        }
+        const orderedKeys = [...months.keys()].sort((a, b) => {
+          const [ay, am] = a.split('-').map(Number);
+          const [by, bm] = b.split('-').map(Number);
+          return ay - by || am - bm;
+        });
+
+        function esc(s) {
+          return String(s).replace(/[&<>"]/g, c =>
+            ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+        }
+
+        if (!orderedKeys.length) {
+          calWrap.remove();
+          return;
+        }
+        let html = '';
+        for (const key of orderedKeys) {
+          const { y, m, days } = months.get(key);
+          const firstWeekday = new Date(y, m - 1, 1).getDay();
+          const daysInMonth = new Date(y, m, 0).getDate();
+          html += '<div class="cal-month">';
+          html += '<div class="cal-title">' + MONTHS[m - 1] + ' ' + y + '</div>';
+          html += '<div class="cal-grid">';
+          for (const wd of WEEKDAYS) html += '<div class="cal-wd">' + wd + '</div>';
+          for (let i = 0; i < firstWeekday; i++) html += '<div class="cal-cell empty"></div>';
+          for (let d = 1; d <= daysInMonth; d++) {
+            const evs = days.get(d);
+            if (evs) {
+              const canceled = evs.every(e => e.status);
+              html += '<div class="cal-cell has-event' + (canceled ? ' canceled' : '') +
+                '" style="--ev:' + esc(evs[0].color) + '">' +
+                '<span>' + d + '</span></div>';
+            } else {
+              html += '<div class="cal-cell"><span>' + d + '</span></div>';
+            }
+          }
+          html += '</div></div>';
+        }
+        calWrap.innerHTML = html;
+      })();
+    </script>
   </section>
 
   <div class="divider">

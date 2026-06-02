@@ -114,6 +114,7 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
             label = e["event_name"] if use_event_name else (e["hosts"] or "Open Play")
             result.append(
                 {
+                    "iso": e["date_obj"].isoformat(),
                     "month": e["month"],
                     "day": e["day"],
                     "weekday": e["weekday"],
