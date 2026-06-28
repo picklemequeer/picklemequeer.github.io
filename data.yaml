@@ -11,6 +11,16 @@ links:
 
 locations:
   west_philly:
+    label: "Kingsessing"
     name: "Kingsessing Recreation Center Tennis Courts"
     address: "1201 S 51st St, Philadelphia, PA"
     google_maps: "https://maps.app.goo.gl/wHSFpqWKNnKPY1HQA"
+    pill_color: "#5b2d8e"
+    pill_bg: "#f3eeff"
+  awbury:
+    label: "Awbury"
+    name: "Awbury Recreation Center"
+    address: "6101 Ardleigh St, Philadelphia, PA 19138"
+    google_maps: "https://www.google.com/maps/search/?api=1&query=Awbury+Park,+6101+Ardleigh+St,+Philadelphia,+PA+19138"
+    pill_color: "#4bbdad"
+    pill_bg: "#e9f8f7"

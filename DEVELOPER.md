@@ -18,10 +18,10 @@ That's it! `index.html` is for the static site (aka website, landing page, pickl
 
 ## Updating the site
 
-- make a change to update `gameplay.csv`
-- merge your changes to `main`
-- the site will auto-deploy
-- do this after we've finalized the host calendar and before sending out the monthly email newsletter (below)
+- if you just need to update the schedule update the [finalized schedule google sheet](https://drive.google.com/drive/u/1/folders/1cArCeN1i7O01_ZfBKgub4tyg9-Yg5tqU) and the site will auto-update within 3 hours
+- to test rendering different kinds of events locally, use `gameplay.csv` with `make render-local`
+- to copy the google sheet to your local `gameplay.csv`, use `make fetch-csv`
+- in addition to the above, the site will auto-deploy on every merge to `main`
 
 ## Sending emails
 
