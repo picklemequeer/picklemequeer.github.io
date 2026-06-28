@@ -149,44 +149,6 @@
 
     /* ---- Events ---- */
 
-
-    .events .location-link {
-      display: block;
-      text-decoration: none;
-      color: inherit;
-      cursor: pointer;
-      margin-bottom: 20px;
-      border-radius: var(--radius-card);
-      transition: filter 0.15s;
-    }
-
-    .events .location-link:active {
-      filter: brightness(0.92);
-    }
-
-    .events .location-block {
-      background: var(--color-bg-orange);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-card);
-      padding: 14px 18px;
-    }
-
-    .events .location-label {
-      color: var(--color-orange);
-      font-size: 12px;
-      font-weight: var(--fw-black);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 2px;
-    }
-
-    .events .location-block .details {
-      font-size: var(--fs-sm);
-      font-weight: var(--fw-bold);
-      line-height: 1.6;
-      color: var(--color-text);
-    }
-
     .event-list {
       list-style: none;
       background: var(--color-bg);
@@ -286,6 +248,22 @@
       border-radius: var(--radius-pill);
       padding: 4px 10px;
       white-space: nowrap;
+    }
+
+    .event-pills {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .event-location {
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+      white-space: nowrap;
+      text-decoration: none;
     }
 
     /* ---- Calendar ---- */
@@ -574,9 +552,8 @@
         font-size: 28px;
       }
 
-      .event-details {
-        flex-direction: column;
-        align-items: flex-start;
+      .event-info {
+        min-width: 0;
       }
 
       .newsletter-form .form-row {
@@ -641,7 +618,10 @@
         </div>
         <div class="event-details">
           <div class="event-info">{{ event.hosts }}</div>
-          <span class="event-time">{{ event.weekday }} · {{ event.time }}</span>
+          <div class="event-pills">
+            <span class="event-time">🕐 {{ event.weekday }} · {{ event.time }}</span>
+            <a href="{{ locations[event.location_key].google_maps }}" target="_blank" rel="noopener" class="event-location" style="color:{{ locations[event.location_key].pill_color }}; background:{{ locations[event.location_key].pill_bg }};">📍 {{ locations[event.location_key].label }}</a>
+          </div>
         </div>
         {% if event.status %}
         <div class="cancel-stamp">Canceled<small>{{ event.status_label }}</small></div>
@@ -660,16 +640,6 @@
   <section class="events">
     <h2>Recent & Upcoming Sessions</h2>
 
-    <a href="{{ locations.west_philly.google_maps }}" target="_blank" rel="noopener" class="location-link">
-      <div class="location-block">
-        <div class="location-label">📍 Location</div>
-        <div class="details">
-          {{ locations.west_philly.name }}<br>
-          {{ locations.west_philly.address }}
-        </div>
-      </div>
-    </a>
-
     <div class="view-calendar"></div>
 
     <ul class="event-list">
@@ -681,7 +651,10 @@
         </div>
         <div class="event-details">
           <div class="event-info">{{ event.hosts }}</div>
-          <span class="event-time">{{ event.weekday }} · {{ event.time }}</span>
+          <div class="event-pills">
+            <span class="event-time">🕐 {{ event.weekday }} · {{ event.time }}</span>
+            <a href="{{ locations[event.location_key].google_maps }}" target="_blank" rel="noopener" class="event-location" style="color:{{ locations[event.location_key].pill_color }}; background:{{ locations[event.location_key].pill_bg }};">📍 {{ locations[event.location_key].label }}</a>
+          </div>
         </div>
         {% if event.status %}
         <div class="cancel-stamp">Canceled<small>{{ event.status_label }}</small></div>

@@ -40,6 +40,16 @@ GAMEPLAY_SHEET_URL = (
 
 EVENT_COLORS = ["#E8500A", "#3aad5e", "#c94040", "#4bbdad", "#e5a820"]
 
+LOCATION_KEY_MAP = {
+    "": "west_philly",
+    "kingsessing": "west_philly",
+    "awbury": "awbury",
+}
+
+
+def resolve_location(raw: str) -> str:
+    return LOCATION_KEY_MAP.get(raw.strip().lower(), "west_philly")
+
 
 def parse_event_date(raw: str) -> tuple[datetime, str] | None:
     """Parse '3/1/25 at 10am' or '4/5/25 at 11am - 1pm' into (datetime, time_str)."""
@@ -76,6 +86,7 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
         hosts = " & ".join(h.strip() for h in hosts_raw.split(",")) if hosts_raw else ""
         event_name = row.get("eventName", "").strip()
         status = (row.get("status") or "").strip().lower()
+        location_key = resolve_location(row.get("eventLocation", ""))
 
         all_events.append(
             {
@@ -88,6 +99,7 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
                 "hosts": hosts,
                 "event_name": event_name,
                 "status": status,
+                "location_key": location_key,
             }
         )
 
@@ -123,6 +135,7 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
                     "color": EVENT_COLORS[i % len(EVENT_COLORS)],
                     "status": e["status"],
                     "status_label": e["status"].title(),
+                    "location_key": e["location_key"],
                 }
             )
         return result
