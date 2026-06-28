@@ -70,6 +70,24 @@
         <h2 style="font-size:22px; font-weight:900; margin:0 0 16px; font-family:'Nunito',Arial,sans-serif;">Upcoming
           Sessions</h2>
 
+        <!-- Where we play -->
+        <div style="font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:10px;">Where we play</div>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:20px;">
+          <tr>
+            {% for key, loc in locations.items() %}
+            <td style="padding-right:{% if not loop.last %}8px{% else %}0{% endif %}; vertical-align:top;">
+              <a href="{{ loc.google_maps }}" target="_blank" rel="noopener" style="display:block; text-decoration:none; color:inherit; background:{{ loc.pill_bg }}; border:1px solid #f0ece4; border-radius:12px; padding:12px 14px;">
+                <div style="font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:1px; color:{{ loc.pill_color }}; margin-bottom:4px;">📍 {{ loc.label }}</div>
+                <div style="font-size:12px; font-weight:700; line-height:1.5; color:#333; font-family:'Nunito',Arial,sans-serif;">{{ loc.name }}<br>{{ loc.address }}</div>
+              </a>
+            </td>
+            {% endfor %}
+          </tr>
+        </table>
+
+        <!-- Schedule -->
+        <div style="font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:10px;">Schedule</div>
+
         <!-- Events list -->
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
           style="background:#fff; border-radius:16px; border:1px solid #f0ece4;">
