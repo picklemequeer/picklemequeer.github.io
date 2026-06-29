@@ -115,15 +115,16 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
             last_month = past[-1]["date_obj"].replace(day=1)
             upcoming = [e for e in past if e["date_obj"] >= last_month]
 
-    # Split into regular and special (have custom event name, no hosts) events
-    regular = [e for e in upcoming if e["hosts"]]
+    # Special events (have custom event name, no hosts) — rendered by Jinja
     special = [e for e in upcoming if e["event_name"]]
 
-    # Assign cycling colors and build final dicts
+    # All sessions for the JS calendar (past + future); uses eventName as label fallback
+    all_regular = all_events
+
     def build_event_list(source, use_event_name=False):
         result = []
         for i, e in enumerate(source):
-            label = e["event_name"] if use_event_name else (e["hosts"] or "Open Play")
+            label = e["event_name"] if use_event_name else (e["hosts"] or e["event_name"] or "Open Play")
             result.append(
                 {
                     "iso": e["date_obj"].isoformat(),
@@ -140,14 +141,17 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
             )
         return result
 
-    return build_event_list(regular), build_event_list(special, use_event_name=True)
+    return (
+        build_event_list(special, use_event_name=True),
+        build_event_list(all_regular),
+    )
 
 
 def render(data_file: Path, local: bool = False, today: date | None = None) -> None:
     with open(data_file) as f:
         data = yaml.safe_load(f)
 
-    data["events"], data["special_events"] = load_events(today=today, local=local)
+    data["special_events"], data["all_events"] = load_events(today=today, local=local)
 
     env = Environment(
         loader=FileSystemLoader(BASE_DIR),
