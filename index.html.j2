@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pickle Me Queer – Queer Pickleball in Philly</title>
-  <meta name="description" content="A queer Philly group that plays pickleball and where all skill levels are welcome. Drop-in play, events, and community. Just bring yourself, no gear needed!">
+  <meta name="description" content="A queer Philly group that plays pickleball and where all skill levels are welcome. Free drop-in play, events, and community. Just bring yourself, no gear needed!">
   <meta property="og:title" content="Pickle Me Queer – Queer Pickleball in Philly">
-  <meta property="og:description" content="A queer Philly group that plays pickleball and where all skill levels are welcome. Drop-in play, events, and community. Just bring yourself, no gear needed!">
+  <meta property="og:description" content="A queer Philly group that plays pickleball and where all skill levels are welcome. Free drop-in play, events, and community. Just bring yourself, no gear needed!">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://picklemequeer.com/">
   <link rel="icon" href="/favicon.ico" sizes="any">
@@ -760,33 +760,16 @@
 
     <div class="view-calendar"></div>
 
-    <ul class="event-list">
-      {% for event in events %}
-      <li{% if event.status %} class="canceled"{% endif %}>
-        <div class="event-date" style="background:{{ event.color }}">
-          <span class="month">{{ event.month }}</span>
-          <span class="day">{{ event.day }}</span>
-        </div>
-        <div class="event-details">
-          <div class="event-info">{{ event.hosts }}</div>
-          <div class="event-pills">
-            <span class="event-time">🕐 {{ event.weekday }} · {{ event.time }}</span>
-            <a href="{{ locations[event.location_key].google_maps }}" target="_blank" rel="noopener" class="event-location" style="color:{{ locations[event.location_key].pill_color }}; background:{{ locations[event.location_key].pill_bg }};">📍 {{ locations[event.location_key].label }}</a>
-          </div>
-        </div>
-        {% if event.status %}
-        <div class="cancel-stamp">Canceled<small>{{ event.status_label }}</small></div>
-        {% endif %}
-      </li>
-      {% endfor %}
-    </ul>
+    <ul class="event-list" id="js-event-list"></ul>
 
-    <script id="sessions-data" type="application/json">{{ events | tojson }}</script>
+    <script id="sessions-data" type="application/json">{{ all_events | tojson }}</script>
+    <script id="locations-data" type="application/json">{{ locations | tojson }}</script>
     <script>
       (function () {
         const root = document.currentScript.closest('.events');
         const calWrap = root.querySelector('.view-calendar');
-        const allEvents = JSON.parse(root.querySelector('#sessions-data').textContent || '[]');
+        const allEvents = JSON.parse(document.getElementById('sessions-data').textContent || '[]');
+        const locations = JSON.parse(document.getElementById('locations-data').textContent || '{}');
         const filterBtns = root.querySelectorAll('.cal-filter-btn');
 
         const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -796,12 +779,19 @@
         let activeFilter = 'all';
         let viewYear, viewMonth;
 
-        if (allEvents.length) {
-          const [y, m] = allEvents[0].iso.split('-').map(Number);
-          viewYear = y; viewMonth = m;
-        } else {
-          const now = new Date();
-          viewYear = now.getFullYear(); viewMonth = now.getMonth() + 1;
+        const now = new Date();
+        const limitMonth = now.getMonth() === 11 ? 1 : now.getMonth() + 2;
+        const limitYear = now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear();
+
+        {
+          const todayYM = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+          const first = allEvents.find(e => e.iso.slice(0, 7) >= todayYM);
+          if (first) {
+            const [y, m] = first.iso.split('-').map(Number);
+            viewYear = y; viewMonth = m;
+          } else {
+            viewYear = now.getFullYear(); viewMonth = now.getMonth() + 1;
+          }
         }
 
         function esc(s) {
@@ -809,10 +799,56 @@
             ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
         }
 
-        function renderCalendar() {
-          const evs = activeFilter === 'all'
+        function visibleEvents() {
+          return activeFilter === 'all'
             ? allEvents
             : allEvents.filter(e => e.location_key === activeFilter);
+        }
+
+        function renderEventList() {
+          const list = root.querySelector('#js-event-list');
+          if (!list) return;
+          const evs = visibleEvents().filter(e => {
+            const [y, m] = e.iso.split('-').map(Number);
+            return y === viewYear && m === viewMonth;
+          });
+          if (!evs.length) {
+            let msg;
+            if ([12, 1, 2].includes(viewMonth)) {
+              msg = '🥶 We\'re on winter break!';
+            } else if (viewYear === limitYear && viewMonth === limitMonth) {
+              msg = '🚧 The final schedule is still pending — check back soon!';
+            } else if (activeFilter !== 'all') {
+              const locLabel = (locations[activeFilter] || {}).label || activeFilter;
+              msg = '😢 No events at ' + locLabel + ' this month.';
+            } else {
+              msg = '😢 No sessions this month.';
+            }
+            list.innerHTML = '<li style="padding:1rem 1.5rem;color:var(--color-text-faint);list-style:none;">' + msg + '</li>';
+            return;
+          }
+          list.innerHTML = evs.map(ev => {
+            const loc = locations[ev.location_key] || {};
+            return '<li' + (ev.status ? ' class="canceled"' : '') + '>' +
+              '<div class="event-date" style="background:' + esc(ev.color) + '">' +
+                '<span class="month">' + esc(ev.month) + '</span>' +
+                '<span class="day">' + esc(String(ev.day)) + '</span>' +
+              '</div>' +
+              '<div class="event-details">' +
+                '<div class="event-info">' + esc(ev.hosts) + '</div>' +
+                '<div class="event-pills">' +
+                  '<span class="event-time">🕐 ' + esc(ev.weekday) + ' · ' + esc(ev.time) + '</span>' +
+                  '<a href="' + esc(loc.google_maps || '') + '" target="_blank" rel="noopener" class="event-location" ' +
+                    'style="color:' + esc(loc.pill_color || '') + ';background:' + esc(loc.pill_bg || '') + ';">📍 ' + esc(loc.label || '') + '</a>' +
+                '</div>' +
+              '</div>' +
+              (ev.status ? '<div class="cancel-stamp">Canceled<small>' + esc(ev.status_label) + '</small></div>' : '') +
+            '</li>';
+          }).join('');
+        }
+
+        function renderCalendar() {
+          const evs = visibleEvents();
 
           const days = new Map();
           for (const ev of evs) {
@@ -828,9 +864,11 @@
 
           let html = '<div class="cal-month">';
           html += '<div class="cal-nav">';
-          html += '<button class="cal-nav-btn" id="js-cal-prev">&#8249;</button>';
+          const atStart = viewYear === 2024 && viewMonth === 2;
+          html += '<button class="cal-nav-btn" id="js-cal-prev"' + (atStart ? ' style="visibility:hidden"' : '') + '>&#8249;</button>';
           html += '<div class="cal-title">' + esc(MONTHS[viewMonth - 1]) + ' ' + viewYear + '</div>';
-          html += '<button class="cal-nav-btn" id="js-cal-next">&#8250;</button>';
+          const atLimit = viewYear === limitYear && viewMonth === limitMonth;
+          html += '<button class="cal-nav-btn" id="js-cal-next"' + (atLimit ? ' style="visibility:hidden"' : '') + '>&#8250;</button>';
           html += '</div>';
           html += '<div class="cal-grid">';
           for (const wd of WEEKDAYS) html += '<div class="cal-wd">' + wd + '</div>';
@@ -849,12 +887,16 @@
           calWrap.innerHTML = html;
 
           calWrap.querySelector('#js-cal-prev').addEventListener('click', () => {
+            if (viewYear === 2024 && viewMonth === 2) return;
             if (viewMonth === 1) { viewMonth = 12; viewYear--; } else viewMonth--;
             renderCalendar();
+            renderEventList();
           });
           calWrap.querySelector('#js-cal-next').addEventListener('click', () => {
+            if (viewYear === limitYear && viewMonth === limitMonth) return;
             if (viewMonth === 12) { viewMonth = 1; viewYear++; } else viewMonth++;
             renderCalendar();
+            renderEventList();
           });
         }
 
@@ -865,6 +907,7 @@
           btn.style.background = btn.dataset.activeBg || '';
           activeFilter = btn.dataset.filter;
           renderCalendar();
+          renderEventList();
         }
 
         filterBtns.forEach(btn => btn.addEventListener('click', () => setActiveFilter(btn)));
@@ -938,7 +981,7 @@
     <h2>FAQs</h2>
     <dl class="dl-list">
       <dt>Do I need my own paddle?</dt>
-      <dd>Nope! We have loaner paddles available at every session.</dd>
+      <dd>Nope! We have loaner paddles available at Kingsessing sessions. Awbury sessions have limited loaner paddles available.</dd>
 
       <dt>Do I need to know how to play?</dt>
       <dd>Not at all. We welcome complete beginners and are happy to teach you the basics.</dd>
@@ -947,13 +990,13 @@
       <dd>We're a queer-centered group, but community members are absolutely welcome.</dd>
 
       <dt>Do I need to sign up in advance?</dt>
-      <dd>Nope, just show up! Hosts make a final call on weather-related cancellations up to an hour before scheduled play — we do our best to keep this site updated, but check our socials to be sure.</dd>
+      <dd>Nope, just show up! Hosts make a final call on weather-related cancellations up to an hour before scheduled play — we do our best to keep this site updated, but please check our socials to be sure 🙏</dd>
 
       <dt>How much does it cost?</dt>
       <dd>It's completely free! Our sessions are community-organized at public courts.</dd>
 
       <dt>What should I bring?</dt>
-      <dd>Just yourself, water, and comfy shoes you can move in.</dd>
+      <dd>Just yourself, water, and comfy shoes you can move in. Awbury sessions have limited loaner paddles available. Kingsessing Recreation Pool is a quick walk from the courts and open from late June, so bring a swimsuit if you want to cool off after!</dd>
     </dl>
   </section>
 
