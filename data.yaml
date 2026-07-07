@@ -13,7 +13,7 @@ locations:
   west_philly:
     label: "Kingsessing"
     name: "Kingsessing Recreation Center Tennis Courts"
-    address: "1201 S 51st St, Philadelphia, PA"
+    address: "1201 S 51st St, Philadelphia, PA 19143"
     google_maps: "https://maps.app.goo.gl/wHSFpqWKNnKPY1HQA"
     pill_color: "#5b2d8e"
     pill_bg: "#f3eeff"
@@ -24,3 +24,19 @@ locations:
     google_maps: "https://www.google.com/maps/search/?api=1&query=Awbury+Park,+6101+Ardleigh+St,+Philadelphia,+PA+19138"
     pill_color: "#4bbdad"
     pill_bg: "#e9f8f7"
+  walnut_hill:
+    label: "Walnut Hill"
+    name: "Walnut Hill"
+    address: "4700-10 Spruce St, Philadelphia, PA 19139"
+    google_maps: "https://www.google.com/maps/search/?api=1&query=4700+Spruce+St,+Philadelphia,+PA+19139"
+    pill_color: "#c97a3a"
+    pill_bg: "#fdf1e6"
+    hidden: true
+  ballers:
+    label: "Ballers"
+    name: "Ballers Philadelphia"
+    address: "1325 N Beach St, Philadelphia, PA 19125"
+    google_maps: "https://www.google.com/maps/search/?api=1&query=Ballers,+1325+N+Beach+St,+Philadelphia,+PA+19125"
+    pill_color: "#c9407a"
+    pill_bg: "#fdeaf2"
+    hidden: true

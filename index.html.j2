@@ -736,7 +736,7 @@
     <div class="where-we-play">
       <div class="where-we-play-title">Where we play</div>
       <div class="where-we-play-panels">
-        {% for key, loc in locations.items() %}
+        {% for key, loc in locations.items() if not loc.hidden %}
         <a href="{{ loc.google_maps }}" target="_blank" rel="noopener" class="location-card" style="background: {{ loc.pill_bg }};">
           <div class="location-card-label" style="color: {{ loc.pill_color }};">📍 {{ loc.label }}</div>
           <div class="location-card-details">{{ loc.name }}<br>{{ loc.address }}</div>
@@ -753,7 +753,7 @@
         <line x1="5" y1="9" x2="8" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
       <button class="cal-filter-btn" data-filter="all" data-active-color="#333" data-active-bg="#e0d9cc">All</button>
-      {% for key, loc in locations.items() %}
+      {% for key, loc in locations.items() if not loc.hidden %}
       <button class="cal-filter-btn" data-filter="{{ key }}" data-active-color="{{ loc.pill_color }}" data-active-bg="{{ loc.pill_bg }}">{{ loc.label }}</button>
       {% endfor %}
     </div>
@@ -817,7 +817,11 @@
             if ([12, 1, 2].includes(viewMonth)) {
               msg = '🥶 We\'re on winter break!';
             } else if (viewYear === limitYear && viewMonth === limitMonth) {
-              msg = '🚧 The final schedule is still pending — check back soon!';
+              const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+              const inLastThreeDays = now.getDate() > daysInMonth - 3;
+              msg = inLastThreeDays
+                ? '🚧 The final schedule is still pending — check back soon!'
+                : '🚧 The final schedule is still pending — check back at the end of the month!';
             } else if (activeFilter !== 'all') {
               const locLabel = (locations[activeFilter] || {}).label || activeFilter;
               msg = '😢 No events at ' + locLabel + ' this month.';

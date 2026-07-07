@@ -44,6 +44,8 @@ LOCATION_KEY_MAP = {
     "": "west_philly",
     "kingsessing": "west_philly",
     "awbury": "awbury",
+    "walnut hill": "walnut_hill",
+    "ballers": "ballers",
 }
 
 
@@ -124,7 +126,11 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
     def build_event_list(source, use_event_name=False):
         result = []
         for i, e in enumerate(source):
-            label = e["event_name"] if use_event_name else (e["hosts"] or e["event_name"] or "Open Play")
+            label = (
+                e["event_name"]
+                if use_event_name
+                else (e["hosts"] or e["event_name"] or "Open Play")
+            )
             result.append(
                 {
                     "iso": e["date_obj"].isoformat(),
