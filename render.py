@@ -118,6 +118,9 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
     # Special events (have custom event name, no hosts) — rendered by Jinja
     special = [e for e in upcoming if e["event_name"]]
 
+    # Upcoming regular (hosted) sessions — rendered in the email
+    regular = [e for e in upcoming if e["hosts"]]
+
     # All sessions for the JS calendar (past + future); uses eventName as label fallback
     all_regular = all_events
 
@@ -143,6 +146,7 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
 
     return (
         build_event_list(special, use_event_name=True),
+        build_event_list(regular),
         build_event_list(all_regular),
     )
 
@@ -151,7 +155,7 @@ def render(data_file: Path, local: bool = False, today: date | None = None) -> N
     with open(data_file) as f:
         data = yaml.safe_load(f)
 
-    data["special_events"], data["all_events"] = load_events(today=today, local=local)
+    data["special_events"], data["events"], data["all_events"] = load_events(today=today, local=local)
 
     env = Environment(
         loader=FileSystemLoader(BASE_DIR),

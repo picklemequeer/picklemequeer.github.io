@@ -73,16 +73,16 @@
         <!-- Where we play -->
         <div style="font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:10px;">Where we play</div>
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:20px;">
+          {% for key, loc in locations.items() %}
           <tr>
-            {% for key, loc in locations.items() %}
-            <td style="padding-right:{% if not loop.last %}8px{% else %}0{% endif %}; vertical-align:top;">
+            <td style="padding-bottom:{% if not loop.last %}8px{% else %}0{% endif %};">
               <a href="{{ loc.google_maps }}" target="_blank" rel="noopener" style="display:block; text-decoration:none; color:inherit; background:{{ loc.pill_bg }}; border:1px solid #f0ece4; border-radius:12px; padding:12px 14px;">
                 <div style="font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:1px; color:{{ loc.pill_color }}; margin-bottom:4px;">📍 {{ loc.label }}</div>
                 <div style="font-size:12px; font-weight:700; line-height:1.5; color:#333; font-family:'Nunito',Arial,sans-serif;">{{ loc.name }}<br>{{ loc.address }}</div>
               </a>
             </td>
-            {% endfor %}
           </tr>
+          {% endfor %}
         </table>
 
         <!-- Schedule -->
@@ -96,7 +96,7 @@
             <td style="padding:14px 10px;{% if not loop.last %} border-bottom:1px solid #f0ece4;{% endif %}">
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
-                  <td width="52" valign="middle" style="padding-right:14px;">
+                  <td width="52" valign="top" style="padding-right:14px;">
                     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="52"
                       style="background:{{ event.color }}; border-radius:12px;">
                       <tr>
@@ -110,21 +110,17 @@
                       </tr>
                     </table>
                   </td>
-                  <td valign="middle" style="font-weight:700; font-size:15px; font-family:'Nunito',Arial,sans-serif; vertical-align:middle;{% if event.status %} color:#999; text-decoration:line-through;{% else %} color:#333;{% endif %}">{{ event.hosts }}</td>
-                  <td width="1" valign="top" align="right" style="white-space:nowrap;">
-                    {% if event.status %}
-                    <div style="margin-bottom:4px;">
+                  <td valign="top">
+                    <div style="font-weight:700; font-size:15px; font-family:'Nunito',Arial,sans-serif; margin-bottom:6px;{% if event.status %} color:#999; text-decoration:line-through;{% else %} color:#333;{% endif %}">{{ event.hosts }}</div>
+                    <div>
+                      {% if event.status %}
                       <span
-                        style="font-size:11px; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; color:#fff; background:#c94040; border:2px solid #c94040; border-radius:4px; padding:4px 10px; font-family:'Nunito',Arial,sans-serif;">Canceled · {{ event.status_label }}</span>
-                    </div>
-                    {% else %}
-                    <div style="margin-bottom:4px;">
+                        style="font-size:11px; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; color:#fff; background:#c94040; border:2px solid #c94040; border-radius:4px; padding:4px 10px; font-family:'Nunito',Arial,sans-serif; display:inline-block; margin:0 6px 4px 0;">Canceled · {{ event.status_label }}</span>
+                      {% else %}
                       <span
-                        style="font-size:11px; font-weight:700; color:#ff6b1a; background:#fff4ee; border-radius:20px; padding:4px 10px; font-family:'Nunito',Arial,sans-serif;">🕐 {{
+                        style="font-size:11px; font-weight:700; color:#ff6b1a; background:#fff4ee; border-radius:20px; padding:4px 10px; font-family:'Nunito',Arial,sans-serif; display:inline-block; margin:0 6px 4px 0;">🕐 {{
                         event.weekday }} · {{ event.time }}</span>
-                    </div>
-                    {% endif %}
-                    <div style="text-align:right;">
+                      {% endif %}
                       <a href="{{ locations[event.location_key].google_maps }}" target="_blank" rel="noopener"
                         style="font-size:11px; font-weight:700; color:{{ locations[event.location_key].pill_color }}; background:{{ locations[event.location_key].pill_bg }}; border-radius:20px; padding:4px 10px; text-decoration:none; display:inline-block; font-family:'Nunito',Arial,sans-serif;">📍 {{ locations[event.location_key].label }}</a>
                     </div>
@@ -230,44 +226,34 @@
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center"
           style="margin:0 auto 14px;">
           <tr>
-            <td style="padding:0 10px;">
-              <a href="{{ links.instagram }}"
-                style="color:#5b2d8e; text-decoration:none; font-size:12px; font-weight:700; font-family:'Nunito',Arial,sans-serif;">
-                <img src="https://cdn.simpleicons.org/instagram/5b2d8e" alt="" width="14" height="14"
-                  style="display:inline-block; vertical-align:middle; margin-right:3px; width:14px; height:14px;">
-                Instagram
+            <td style="padding:0 8px;">
+              <a href="{{ links.instagram }}" style="text-decoration:none;">
+                <img src="https://cdn.simpleicons.org/instagram/5b2d8e" alt="Instagram" width="20" height="20"
+                  style="display:block; width:20px; height:20px;">
               </a>
             </td>
-            <td style="padding:0 10px;">
-              <a href="{{ links.linktree }}"
-                style="color:#5b2d8e; text-decoration:none; font-size:12px; font-weight:700; font-family:'Nunito',Arial,sans-serif;">
-                <img src="https://cdn.simpleicons.org/linktree/5b2d8e" alt="" width="14" height="14"
-                  style="display:inline-block; vertical-align:middle; margin-right:3px; width:14px; height:14px;">
-                Linktree
+            <td style="padding:0 8px;">
+              <a href="{{ links.linktree }}" style="text-decoration:none;">
+                <img src="https://cdn.simpleicons.org/linktree/5b2d8e" alt="Linktree" width="20" height="20"
+                  style="display:block; width:20px; height:20px;">
               </a>
             </td>
-            <td style="padding:0 10px;">
-              <a href="{{ links.discord }}"
-                style="color:#5b2d8e; text-decoration:none; font-size:12px; font-weight:700; font-family:'Nunito',Arial,sans-serif;">
-                <img src="https://cdn.simpleicons.org/discord/5b2d8e" alt="" width="14" height="14"
-                  style="display:inline-block; vertical-align:middle; margin-right:3px; width:14px; height:14px;">
-                Discord
+            <td style="padding:0 8px;">
+              <a href="{{ links.discord }}" style="text-decoration:none;">
+                <img src="https://cdn.simpleicons.org/discord/5b2d8e" alt="Discord" width="20" height="20"
+                  style="display:block; width:20px; height:20px;">
               </a>
             </td>
-            <td style="padding:0 10px;">
-              <a href="{{ links.google_calendar }}"
-                style="color:#5b2d8e; text-decoration:none; font-size:12px; font-weight:700; font-family:'Nunito',Arial,sans-serif;">
-                <img src="https://cdn.simpleicons.org/googlecalendar/5b2d8e" alt="" width="14" height="14"
-                  style="display:inline-block; vertical-align:middle; margin-right:3px; width:14px; height:14px;">
-                Calendar
+            <td style="padding:0 8px;">
+              <a href="{{ links.google_calendar }}" style="text-decoration:none;">
+                <img src="https://cdn.simpleicons.org/googlecalendar/5b2d8e" alt="Calendar" width="20" height="20"
+                  style="display:block; width:20px; height:20px;">
               </a>
             </td>
-            <td style="padding:0 10px;">
-              <a href="{{ links.google_map }}"
-                style="color:#5b2d8e; text-decoration:none; font-size:12px; font-weight:700; font-family:'Nunito',Arial,sans-serif;">
-                <img src="https://cdn.simpleicons.org/googlemaps/5b2d8e" alt="" width="14" height="14"
-                  style="display:inline-block; vertical-align:middle; margin-right:3px; width:14px; height:14px;">
-                Locations
+            <td style="padding:0 8px;">
+              <a href="{{ links.google_map }}" style="text-decoration:none;">
+                <img src="https://cdn.simpleicons.org/googlemaps/5b2d8e" alt="Locations" width="20" height="20"
+                  style="display:block; width:20px; height:20px;">
               </a>
             </td>
           </tr>
