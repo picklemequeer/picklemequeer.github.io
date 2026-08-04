@@ -763,12 +763,14 @@
     <ul class="event-list" id="js-event-list"></ul>
 
     <script id="sessions-data" type="application/json">{{ all_events | tojson }}</script>
+    <script id="special-events-data" type="application/json">{{ special_events | tojson }}</script>
     <script id="locations-data" type="application/json">{{ locations | tojson }}</script>
     <script>
       (function () {
         const root = document.currentScript.closest('.events');
         const calWrap = root.querySelector('.view-calendar');
         const allEvents = JSON.parse(document.getElementById('sessions-data').textContent || '[]');
+        const specialEvents = JSON.parse(document.getElementById('special-events-data').textContent || '[]');
         const locations = JSON.parse(document.getElementById('locations-data').textContent || '{}');
         const filterBtns = root.querySelectorAll('.cal-filter-btn');
 
@@ -818,8 +820,9 @@
               msg = '🥶 We\'re on winter break!';
             } else if (viewYear === limitYear && viewMonth === limitMonth) {
               const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+              const inFirstThreeDays = now.getDate() <= 3;
               const inLastThreeDays = now.getDate() > daysInMonth - 3;
-              msg = inLastThreeDays
+              msg = inFirstThreeDays || inLastThreeDays
                 ? '🚧 The final schedule is still pending — check back soon!'
                 : '🚧 The final schedule is still pending — check back at the end of the month!';
             } else if (activeFilter !== 'all') {
@@ -831,7 +834,9 @@
             list.innerHTML = '<li style="padding:1rem 1.5rem;color:var(--color-text-faint);list-style:none;">' + msg + '</li>';
             return;
           }
-          list.innerHTML = evs.map(ev => {
+          const specialIsos = new Set(specialEvents.map(e => e.iso));
+          const hasOnlySpecial = activeFilter === 'all' && evs.length > 0 && evs.every(e => specialIsos.has(e.iso));
+          let html = evs.map(ev => {
             const loc = locations[ev.location_key] || {};
             return '<li' + (ev.status ? ' class="canceled"' : '') + '>' +
               '<div class="event-date" style="background:' + esc(ev.color) + '">' +
@@ -849,6 +854,10 @@
               (ev.status ? '<div class="cancel-stamp">Canceled<small>' + esc(ev.status_label) + '</small></div>' : '') +
             '</li>';
           }).join('');
+          if (hasOnlySpecial) {
+            html += '<li style="padding:1rem 1.5rem;color:var(--color-text-faint);list-style:none;">🚧 The final schedule is still pending — check back at the end of the month!</li>';
+          }
+          list.innerHTML = html;
         }
 
         function renderCalendar() {
