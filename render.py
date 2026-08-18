@@ -89,6 +89,7 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
         event_name = row.get("eventName", "").strip()
         status = (row.get("status") or "").strip().lower()
         location_key = resolve_location(row.get("eventLocation", ""))
+        event_link = row.get("eventLink", "").strip()
 
         all_events.append(
             {
@@ -102,6 +103,7 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
                 "event_name": event_name,
                 "status": status,
                 "location_key": location_key,
+                "event_link": event_link,
             }
         )
 
@@ -134,20 +136,21 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
                 if use_event_name
                 else (e["hosts"] or e["event_name"] or "Open Play")
             )
-            result.append(
-                {
-                    "iso": e["date_obj"].isoformat(),
-                    "month": e["month"],
-                    "day": e["day"],
-                    "weekday": e["weekday"],
-                    "time": e["time"],
-                    "hosts": label,
-                    "color": EVENT_COLORS[i % len(EVENT_COLORS)],
-                    "status": e["status"],
-                    "status_label": e["status"].title(),
-                    "location_key": e["location_key"],
-                }
-            )
+            event_dict = {
+                "iso": e["date_obj"].isoformat(),
+                "month": e["month"],
+                "day": e["day"],
+                "weekday": e["weekday"],
+                "time": e["time"],
+                "hosts": label,
+                "color": EVENT_COLORS[i % len(EVENT_COLORS)],
+                "status": e["status"],
+                "status_label": e["status"].title(),
+                "location_key": e["location_key"],
+            }
+            if e.get("event_link"):
+                event_dict["link"] = e["event_link"]
+            result.append(event_dict)
         return result
 
     return (
