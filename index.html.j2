@@ -266,6 +266,17 @@
       text-decoration: none;
     }
 
+    .event-link-wrapper {
+      display: contents;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .event-link-wrapper:hover {
+      opacity: 0.8;
+    }
+
     /* ---- Where we play ---- */
 
     .where-we-play {
@@ -661,6 +672,81 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* ---- Toast ---- */
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      max-width: 420px;
+      font-size: var(--fs-sm);
+      color: var(--color-text);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      animation: slideIn 0.3s ease-out;
+      z-index: 9999;
+      white-space: nowrap;
+    }
+
+    .toast.hidden {
+      display: none;
+    }
+
+    .toast-icon {
+      flex-shrink: 0;
+      font-size: 20px;
+    }
+
+    .toast-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: space-between;
+    }
+
+    .toast-text {
+      flex-shrink: 0;
+    }
+
+    .toast-link {
+      color: var(--color-orange);
+      text-decoration: none;
+      font-weight: var(--fw-bold);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .toast-link:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .toast {
+        bottom: 16px;
+        right: 16px;
+        left: 16px;
+        max-width: none;
+      }
+    }
   </style>
 </head>
 
@@ -705,6 +791,9 @@
     <ul class="event-list">
       {% for event in special_events %}
       <li{% if event.status %} class="canceled"{% endif %}>
+        {% if event.link %}
+        <a href="{{ event.link }}" target="_blank" rel="noopener" class="event-link-wrapper">
+        {% endif %}
         <div class="event-date" style="background:{{ event.color }}">
           <span class="month">{{ event.month }}</span>
           <span class="day">{{ event.day }}</span>
@@ -716,6 +805,9 @@
             <a href="{{ locations[event.location_key].google_maps }}" target="_blank" rel="noopener" class="event-location" style="color:{{ locations[event.location_key].pill_color }}; background:{{ locations[event.location_key].pill_bg }};">📍 {{ locations[event.location_key].label }}</a>
           </div>
         </div>
+        {% if event.link %}
+        </a>
+        {% endif %}
         {% if event.status %}
         <div class="cancel-stamp">Canceled<small>{{ event.status_label }}</small></div>
         {% endif %}
@@ -838,7 +930,7 @@
           const hasOnlySpecial = activeFilter === 'all' && evs.length > 0 && evs.every(e => specialIsos.has(e.iso));
           let html = evs.map(ev => {
             const loc = locations[ev.location_key] || {};
-            return '<li' + (ev.status ? ' class="canceled"' : '') + '>' +
+            const eventContent =
               '<div class="event-date" style="background:' + esc(ev.color) + '">' +
                 '<span class="month">' + esc(ev.month) + '</span>' +
                 '<span class="day">' + esc(String(ev.day)) + '</span>' +
@@ -850,9 +942,12 @@
                   '<a href="' + esc(loc.google_maps || '') + '" target="_blank" rel="noopener" class="event-location" ' +
                     'style="color:' + esc(loc.pill_color || '') + ';background:' + esc(loc.pill_bg || '') + ';">📍 ' + esc(loc.label || '') + '</a>' +
                 '</div>' +
-              '</div>' +
-              (ev.status ? '<div class="cancel-stamp">Canceled<small>' + esc(ev.status_label) + '</small></div>' : '') +
-            '</li>';
+              '</div>';
+            const cancelStamp = ev.status ? '<div class="cancel-stamp">Canceled<small>' + esc(ev.status_label) + '</small></div>' : '';
+            const wrapped = ev.link
+              ? '<a href="' + esc(ev.link) + '" target="_blank" rel="noopener" class="event-link-wrapper">' + eventContent + '</a>' + cancelStamp
+              : eventContent + cancelStamp;
+            return '<li' + (ev.status ? ' class="canceled"' : '') + '>' + wrapped + '</li>';
           }).join('');
           if (hasOnlySpecial) {
             html += '<li style="padding:1rem 1.5rem;color:var(--color-text-faint);list-style:none;">🚧 The final schedule is still pending — check back at the end of the month!</li>';
@@ -1124,6 +1219,44 @@
     <span style="background:#004DFF"></span>
     <span style="background:#750787"></span>
   </div>
+
+  <div id="event-toast" class="toast hidden">
+    <div class="toast-icon">🎉</div>
+    <div class="toast-content">
+      <div id="toast-message"></div>
+    </div>
+  </div>
+
+  <script>
+    function showEventToast() {
+      const specialEventsData = document.getElementById('special-events-data');
+      if (!specialEventsData) return;
+
+      const specialEvents = JSON.parse(specialEventsData.textContent || '[]');
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+      const futureWithLink = specialEvents.find(e => {
+        if (!e.link) return false;
+        const [y, m, d] = e.iso.split('-').map(Number);
+        const eventDate = new Date(y, m - 1, d);
+        return eventDate >= today;
+      });
+
+      if (futureWithLink) {
+        const toast = document.getElementById('event-toast');
+        const message = document.getElementById('toast-message');
+        message.innerHTML = `<div class="toast-text"><strong>${futureWithLink.hosts}</strong> on ${futureWithLink.month} ${futureWithLink.day}.</div><a href="${futureWithLink.link}" target="_blank" rel="noopener" class="toast-link">Learn More →</a>`;
+        toast.classList.remove('hidden');
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', showEventToast);
+    } else {
+      showEventToast();
+    }
+  </script>
 
 </body>
 
