@@ -14,6 +14,7 @@ Usage:
 import csv
 import io
 import re
+import subprocess
 import sys
 import time
 import urllib.request
@@ -160,11 +161,27 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
     )
 
 
+def get_commit_hash() -> str | None:
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=BASE_DIR,
+            capture_output=True,
+            text=True,
+            timeout=5
+        )
+        return result.stdout.strip() if result.returncode == 0 else None
+    except (subprocess.SubprocessError, FileNotFoundError):
+        return None
+
+
 def render(data_file: Path, local: bool = False, today: date | None = None) -> None:
     with open(data_file) as f:
         data = yaml.safe_load(f)
 
     data["special_events"], data["events"], data["all_events"] = load_events(today=today, local=local)
+    data["render_time"] = datetime.now().isoformat()
+    data["commit_hash"] = get_commit_hash()
 
     env = Environment(
         loader=FileSystemLoader(BASE_DIR),

@@ -645,6 +645,25 @@
       text-decoration: none;
     }
 
+    .commit-signature {
+      font-size: var(--fs-xs);
+      color: var(--color-text-faint);
+      margin-top: 12px;
+    }
+
+    .commit-signature a {
+      color: var(--color-text-faint);
+      text-decoration: none;
+    }
+
+    .commit-signature a:hover {
+      text-decoration: underline;
+    }
+
+    .commit-signature.hidden {
+      display: none;
+    }
+
     /* ---- Responsive ---- */
 
     @media (max-width: 520px) {
@@ -682,14 +701,14 @@
       background: var(--color-bg);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
-      padding: 16px 20px;
+      padding: 16px 40px 16px 16px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       max-width: 420px;
       font-size: var(--fs-sm);
       color: var(--color-text);
       display: flex;
       gap: 12px;
-      align-items: center;
+      align-items: flex-start;
       animation: slideIn 0.3s ease-out;
       z-index: 9999;
       white-space: nowrap;
@@ -726,6 +745,68 @@
 
     .toast-link:hover {
       text-decoration: underline;
+      align-items: flex-start;
+      animation: slideIn 0.3s ease-out;
+      z-index: 9999;
+    }
+
+    .toast.hidden {
+      display: none;
+    }
+
+    .toast-icon {
+      flex-shrink: 0;
+      font-size: 20px;
+      margin-top: 2px;
+    }
+
+    .toast-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+      white-space: normal;
+    }
+
+    .toast-text {
+      flex-shrink: 0;
+    }
+
+    .toast-link {
+      color: var(--color-orange);
+      text-decoration: none;
+      font-weight: var(--fw-bold);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .toast-link:hover {
+      text-decoration: underline;
+    }
+
+    .toast-dismiss {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      color: var(--color-text-faint);
+      cursor: pointer;
+      padding: 0;
+      font-size: 16px;
+      line-height: 1;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      transition: color 0.2s;
+    }
+
+    .toast-dismiss:hover {
+      color: var(--color-text);
     }
 
     @keyframes slideIn {
@@ -1207,6 +1288,10 @@
     <p class="footer-email">
       Questions? Reach us at <a href="mailto:{{ links.email }}">{{ links.email }}</a>
     </p>
+
+    <div class="commit-signature" id="commit-signature" data-render-time="{{ render_time }}">
+      <a id="commit-link" href="" target="_blank" rel="noopener"></a>
+    </div>
   </footer>
 
   <div class="rainbow-stripe">
@@ -1225,6 +1310,7 @@
     <div class="toast-content">
       <div id="toast-message"></div>
     </div>
+    <button id="toast-dismiss-btn" class="toast-dismiss" aria-label="Dismiss notification">&times;</button>
   </div>
 
   <script>
@@ -1256,6 +1342,30 @@
     } else {
       showEventToast();
     }
+
+    document.getElementById('toast-dismiss-btn').addEventListener('click', () => {
+      document.getElementById('event-toast').classList.add('hidden');
+    });
+    (function() {
+      const signatureEl = document.getElementById('commit-signature');
+      const linkEl = document.getElementById('commit-link');
+      const renderTimeStr = signatureEl.dataset.renderTime;
+      const commitHash = '{{ commit_hash }}';
+
+      if (renderTimeStr) {
+        const timestamp = new Date(renderTimeStr);
+        const formatted = timestamp.toLocaleString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        });
+        linkEl.textContent = `Last updated: ${formatted}`;
+        linkEl.href = commitHash ? `{{ links.github }}/commit/${commitHash}` : '{{ links.github }}';
+      }
+    })();
   </script>
 
 </body>
