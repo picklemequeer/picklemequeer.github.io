@@ -156,7 +156,7 @@ def load_events(today: date | None = None, local: bool = False) -> list[dict]:
 
     return (
         build_event_list(special, use_event_name=True),
-        build_event_list(regular),
+        build_event_list(upcoming),
         build_event_list(all_regular),
     )
 
