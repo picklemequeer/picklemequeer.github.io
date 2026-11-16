@@ -41,3 +41,11 @@ locations:
     pill_color: "#c9407a"
     pill_bg: "#fdeaf2"
     hidden: true
+  bounce:
+    label: "Bounce"
+    name: "Bounce"
+    address: "913 Wallace St, Philadelphia, PA 19123"
+    google_maps: "https://www.google.com/maps/search/?api=1&query=Bounce,+913+Wallace+St,+Philadelphia,+PA+19123"
+    pill_color: "#2d6bb8"
+    pill_bg: "#eef4fc"
+    hidden: true

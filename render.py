@@ -47,6 +47,7 @@ LOCATION_KEY_MAP = {
     "awbury": "awbury",
     "walnut hill": "walnut_hill",
     "ballers": "ballers",
+    "bounce": "bounce",
 }
 
 

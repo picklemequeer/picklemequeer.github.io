@@ -987,9 +987,11 @@
             const [y, m] = e.iso.split('-').map(Number);
             return y === viewYear && m === viewMonth;
           });
+          const winterMonth = [12, 1, 2].includes(viewMonth);
+
           if (!evs.length) {
             let msg;
-            if ([12, 1, 2].includes(viewMonth)) {
+            if (winterMonth) {
               msg = '🥶 We\'re on winter break!';
             } else if (viewYear === limitYear && viewMonth === limitMonth) {
               const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
@@ -1030,7 +1032,7 @@
               : eventContent + cancelStamp;
             return '<li' + (ev.status ? ' class="canceled"' : '') + '>' + wrapped + '</li>';
           }).join('');
-          if (hasOnlySpecial) {
+          if (hasOnlySpecial && !winterMonth) {
             html += '<li style="padding:1rem 1.5rem;color:var(--color-text-faint);list-style:none;">🚧 The final schedule is still pending — check back at the end of the month!</li>';
           }
           list.innerHTML = html;
